@@ -20,6 +20,12 @@
             <artifactId>activiti-spring</artifactId>
             <version>7-201802-EA</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.activiti.cloud</groupId>
+            <artifactId>activiti-cloud-services-rest-impl</artifactId>
+            <version>7-201802-EA</version>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>

@@ -52,7 +52,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
                 .enable(environmentDefine.isTest() || environmentDefine.isDev())
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.wei.basic.flowengine.web"))
+                .apis(RequestHandlerSelectors.basePackage("org.activiti.cloud.services"))
                 .paths(PathSelectors.any())
                 .build().globalOperationParameters(pars);
     }

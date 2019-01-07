@@ -1,5 +1,7 @@
 package com.wei.basic.flowengine.app.config;
 
+import org.activiti.cloud.services.events.ProcessEngineChannels;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,8 +11,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan({
         "com.wei.basic.flowengine",
-        "com.wei.service"
+        "com.wei.service",
+        "org.activiti",
 })
+
+@EnableBinding({ProcessEngineChannels.class})
 public class FlowEngineAppConfig {
 
 }
