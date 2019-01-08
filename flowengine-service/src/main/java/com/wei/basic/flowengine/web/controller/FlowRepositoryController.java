@@ -30,11 +30,14 @@ public class FlowRepositoryController {
         Deployment deploy;
         try {
             deploy = repositoryService.createDeployment()
-                    .addInputStream(name, file.getInputStream()).deploy();
+                    .name(file.getOriginalFilename())
+                    .addInputStream(file.getOriginalFilename(), file.getInputStream())
+                    .deploy();
         } catch (IOException e) {
             log.error("deploy flow error", e);
             return CommonResult.errorReturn("部署流程定义失败");
         }
+        log.info("deploy flow {} success", name);
         return CommonResult.successReturn(deploy);
     }
 
