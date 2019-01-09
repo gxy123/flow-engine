@@ -3,8 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>com.wei.basic.flowengine</groupId>
+    <groupId>com.wei.flowengine</groupId>
     <artifactId>flowengine-server</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
@@ -26,9 +25,15 @@
         <dependencies>
             <dependency>
                 <groupId>com.wei</groupId>
+                <artifactId>frame-client</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.wei</groupId>
                 <artifactId>frame-common</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
+
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
@@ -179,4 +184,11 @@
             </plugins>
         </pluginManagement>
     </build>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>Snapshots</id>
+            <name>nexus-public-snapshots</name>
+            <url>http://nexus.xiaoweilvzheng.com:9989/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

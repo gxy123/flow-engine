@@ -2,7 +2,7 @@ server:
   tomcat:
     max-threads: 3000
     min-spare-threads: 10
-  port: 3040
+  port: 3020
 eureka:
   client:
     service-url:
