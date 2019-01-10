@@ -14,7 +14,7 @@ eureka:
     hostname: ${spring.cloud.client.ip-address}
 spring:
   application:
-    name: xiaowei-api
+    name: flow-engine
   datasource:
       type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: com.mysql.jdbc.Driver

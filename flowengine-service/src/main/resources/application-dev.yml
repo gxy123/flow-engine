@@ -14,7 +14,7 @@ eureka:
     prefer-ip-address: true
 spring:
   application:
-    name: xiaowei-api
+    name: flow-engine
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
