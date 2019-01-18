@@ -1,5 +1,6 @@
 package com.wei.basic.flowengine.configer;
 
+import com.wei.basic.flowengine.event.listener.UnifiedEventListener;
 import org.activiti.engine.DynamicBpmnService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.ManagementService;
@@ -16,18 +17,26 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 public class ActivitiConfiguration {
 
+
     @Bean
-    public ProcessEngineConfiguration processEngineConfiguration(DataSource dataSource, PlatformTransactionManager transactionManager) {
+    public ProcessEngineConfiguration processEngineConfiguration(
+            DataSource dataSource,
+            PlatformTransactionManager transactionManager,
+            UnifiedEventListener eventListener) {
         SpringProcessEngineConfiguration processEngineConfiguration = new SpringProcessEngineConfiguration();
         processEngineConfiguration.setDataSource(dataSource);
         processEngineConfiguration.setDatabaseSchemaUpdate("true");
         processEngineConfiguration.setDatabaseType("mysql");
         processEngineConfiguration.setTransactionManager(transactionManager);
-
+        List listeners = new ArrayList<>();
+        listeners.add(eventListener);
+        processEngineConfiguration.setEventListeners(listeners);
         return processEngineConfiguration;
     }
 
