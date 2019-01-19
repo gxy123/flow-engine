@@ -4,6 +4,8 @@ import com.wei.basic.flowengine.client.domain.ProcessInstanceDO;
 import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
 import com.wei.basic.flowengine.service.impl.FlowInstanceService;
 import com.wei.client.base.CommonResult;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.cloud.services.api.commands.StartProcessInstanceCmd;
 import org.activiti.cloud.services.api.model.ProcessInstance;
@@ -26,6 +28,7 @@ import static com.wei.client.base.CommonResult.successReturn;
 /**
  * Created by suyaqiang on 2019/1/7.
  */
+@Api(description = "流程实例的相关接口")
 @RestController
 @RequestMapping("/flowengine/flows/instance")
 @Slf4j
@@ -40,7 +43,7 @@ public class FlowInstanceController {
     @Resource
     private FlowInstanceService flowInstanceService;
 
-
+    @ApiOperation(value = "发起一个流程实例",httpMethod = "POST",notes = "发起一个流程实例")
     @PostMapping("start")
     public CommonResult<ProcessInstanceDO> start(@RequestBody ProcessInstanceDO instanceCmd) {
         StartProcessInstanceCmd cmd = new StartProcessInstanceCmd(null,
@@ -53,7 +56,7 @@ public class FlowInstanceController {
         instance.setStartTime(processInstance.getStartDate());
         return successReturn(instance);
     }
-
+    @ApiOperation(value = "获取某流程实例未完成的节点列表",httpMethod = "GET",notes = "获取某流程实例未完成的节点列表")
     @GetMapping("{id}/todotasks")
     public CommonResult<List<TaskInstanceDO>> completeTask(@PathVariable String id) {
         return successReturn(flowInstanceService.getTodoTasks(id));

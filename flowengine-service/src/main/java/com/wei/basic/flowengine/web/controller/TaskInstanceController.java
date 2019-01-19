@@ -3,6 +3,8 @@ package com.wei.basic.flowengine.web.controller;
 import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
 import com.wei.basic.flowengine.service.impl.FlowInstanceService;
 import com.wei.client.base.CommonResult;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.cloud.services.api.commands.CompleteTaskCmd;
 import org.activiti.cloud.services.core.ProcessEngineWrapper;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +29,7 @@ import static com.wei.client.base.CommonResult.successReturn;
 /**
  * Created by suyaqiang on 2019/1/7.
  */
+@Api(description = "任务实例的相关接口")
 @RestController
 @RequestMapping("/flowengine/tasks")
 @Slf4j
@@ -46,6 +50,7 @@ public class TaskInstanceController {
     /**
      * 返回正在进行的tasks
      */
+    @ApiOperation(value = "提交任务", httpMethod = "POST", notes = "提交任务")
     @PostMapping("{taskId}/complete")
     public CommonResult<List<TaskInstanceDO>> completeTask(
             @PathVariable String taskId,
@@ -63,6 +68,19 @@ public class TaskInstanceController {
                 .singleResult().getProcessInstanceId();
 
         return successReturn(flowInstanceService.getTodoTasks(processInstanceId));
+    }
+
+    @ApiOperation(value = "节点改派", httpMethod = "POST", notes = "节点改派")
+    @PostMapping("{taskId}/setAssignee")
+    public CommonResult setAssignee(
+            @PathVariable String taskId, @PathParam(value = "ownerId") String userid) {
+        try {
+            taskService.setAssignee(taskId, userid);
+        } catch (Exception e) {
+           log.info("Modification anomaly taskId:{}",taskId);
+           return CommonResult.errorReturn("改派异常");
+        }
+        return successReturn(true);
     }
 
 }

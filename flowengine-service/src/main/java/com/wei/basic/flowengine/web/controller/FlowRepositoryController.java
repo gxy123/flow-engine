@@ -3,6 +3,9 @@ package com.wei.basic.flowengine.web.controller;
 import com.wei.basic.flowengine.client.domain.ProcessDefinitionDO;
 import com.wei.basic.flowengine.client.domain.UserTaskDO;
 import com.wei.client.base.CommonResult;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.Process;
@@ -27,6 +30,7 @@ import java.util.Map;
 /**
  * Created by suyaqiang on 2019/1/7.
  */
+@Api(description = "流程定义相关接口")
 @RestController
 @RequestMapping("/flowengine/flows")
 @Slf4j
@@ -36,6 +40,7 @@ public class FlowRepositoryController {
     private RepositoryService repositoryService;
 
 
+    @ApiOperation(value = "发布流程接口", httpMethod = "Post", notes = "发布流程接口")
     @PostMapping("publish")
     public CommonResult<ProcessDefinitionDO> publish(@RequestBody Map<String, String> m) {
         String name = m.get("name");
@@ -62,7 +67,7 @@ public class FlowRepositoryController {
 
         return CommonResult.successReturn(defVo);
     }
-
+    @ApiOperation(value = "根据流程ProcessDefinitionId获取该流程的所有节点",httpMethod = "GET",notes = "根据流程ProcessDefinitionId获取该流程的所有节点")
     @GetMapping("{id}/tasks")
     public CommonResult<List<UserTaskDO>> tasks(@PathVariable String id) {
         org.activiti.engine.repository.ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
