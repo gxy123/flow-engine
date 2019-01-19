@@ -21,7 +21,9 @@ public class ProcessInstanceDO {
 
     private String businessKey;
 
-    private Date startDate;
+    private Date startTime;
+
+    private Date endTime;
 
     private Map<String, Object> variables;
 }

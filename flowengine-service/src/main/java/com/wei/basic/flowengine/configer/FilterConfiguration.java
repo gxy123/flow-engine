@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class FilterConfiguration {
+
     @Bean
     public FilterRegistrationBean requestFilter() {
         FilterRegistrationBean registration = new FilterRegistrationBean();

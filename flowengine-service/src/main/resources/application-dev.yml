@@ -52,14 +52,14 @@ mybatis:
 
 # rocketmq
 rocketmq:
-  consumer:
-    consumer-id: CID_jebe_orderservice_01
-    access-key: i3xR4RSOyYNBPZSb
-    secret-key: kU1Wd69jUH56ACMk0uqJi2lxA34R3g
-    ons-address: http://onsaddr-internet.aliyun.com/rocketmq/nsaddr4client-internet
-    consume-thread-numbers: 1
-    topic: order_split
-    emp-assgin-tag: addLead
+    producer:
+      access-key: i3xR4RSOyYNBPZSb
+      secret-key: kU1Wd69jUH56ACMk0uqJi2lxA34R3g
+      ons-address: http://onsaddr-internet.aliyun.com/rocketmq/nsaddr4client-internet
+      producer-id: PID-flow-engine-state-producer-test
+      topic: flow-engine-state-topic-test
+
+
 
 
 

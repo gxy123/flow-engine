@@ -16,14 +16,14 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 
-import static org.activiti.engine.delegate.event.ActivitiEventType.PROCESS_STARTED;
+import static org.activiti.engine.delegate.event.ActivitiEventType.PROCESS_COMPLETED;
 
 /**
  * Created by suyaqiang on 2019/1/18.
  */
 @Component
 @Slf4j
-public class ProcessStartedHandler implements EventHandler {
+public class ProcessCompletedHandler implements EventHandler {
 
     @Resource
     private Producer messageProducer;
@@ -39,7 +39,6 @@ public class ProcessStartedHandler implements EventHandler {
         ProcessInstanceDO started = new ProcessInstanceDO();
         started.setProcessDefinitionId(event.getProcessDefinitionId());
         started.setId(event.getProcessInstanceId());
-        started.setStartTime(instance.getStartTime());
         started.setBusinessKey(instance.getBusinessKey());
 
         ObjectMapper mapper = new ObjectMapper();
@@ -51,14 +50,14 @@ public class ProcessStartedHandler implements EventHandler {
         } catch (JsonProcessingException e) {
             log.error("serialize fail", e);
         }
-        Message m = new Message(mqProperties.getTopic(), "PROCESS_STARTED", message.getBytes());
+        Message m = new Message(mqProperties.getTopic(), "PROCESS_COMPLETED", message.getBytes());
         messageProducer.send(m);
 
-        log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), "PROCESS_STARTED");
+        log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), "PROCESS_COMPLETED");
     }
 
     @Override
     public boolean supports(ActivitiEvent event) {
-        return PROCESS_STARTED.equals(event.getType());
+        return PROCESS_COMPLETED.equals(event.getType());
     }
 }

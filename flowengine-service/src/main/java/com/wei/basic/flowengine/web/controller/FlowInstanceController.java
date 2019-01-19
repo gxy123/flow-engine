@@ -43,13 +43,14 @@ public class FlowInstanceController {
 
     @PostMapping("start")
     public CommonResult<ProcessInstanceDO> start(@RequestBody ProcessInstanceDO instanceCmd) {
-        StartProcessInstanceCmd cmd = new StartProcessInstanceCmd(null, instanceCmd.getProcessDefinitionId()
-                , instanceCmd.getVariables(), instanceCmd.getBusinessKey());
+        StartProcessInstanceCmd cmd = new StartProcessInstanceCmd(null,
+                instanceCmd.getProcessDefinitionId(),
+                instanceCmd.getVariables(), instanceCmd.getBusinessKey());
         ProcessInstance processInstance = processEngine.startProcess(cmd);
         ProcessInstanceDO instance = new ProcessInstanceDO();
         instance.setBusinessKey(processInstance.getBusinessKey());
         instance.setId(processInstance.getId());
-        instance.setStartDate(processInstance.getStartDate());
+        instance.setStartTime(processInstance.getStartDate());
         return successReturn(instance);
     }
 
