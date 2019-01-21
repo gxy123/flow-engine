@@ -1,11 +1,10 @@
 package com.wei.basic.flowengine.web.controller;
 
 import com.wei.basic.flowengine.client.domain.ProcessDefinitionDO;
-import com.wei.basic.flowengine.client.domain.UserTaskDO;
+import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
 import com.wei.client.base.CommonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.Process;
@@ -66,9 +65,10 @@ public class FlowRepositoryController {
         defVo.setVersion(processDef.getVersion());
         return CommonResult.successReturn(defVo);
     }
-    @ApiOperation(value = "根据流程ProcessDefinitionId获取该流程的所有节点",httpMethod = "GET",notes = "根据流程ProcessDefinitionId获取该流程的所有节点")
+
+    @ApiOperation(value = "根据流程ProcessDefinitionId获取该流程的所有节点", httpMethod = "GET", notes = "根据流程ProcessDefinitionId获取该流程的所有节点")
     @GetMapping("{id}/tasks")
-    public CommonResult<List<UserTaskDO>> tasks(@PathVariable String id) {
+    public CommonResult<List<TaskInstanceDO>> tasks(@PathVariable String id) {
         org.activiti.engine.repository.ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(id)
                 .singleResult();
@@ -77,16 +77,16 @@ public class FlowRepositoryController {
         }
 
         List<Process> processes = repositoryService.getBpmnModel(id).getProcesses();
-        List<UserTaskDO> userTasks = new LinkedList<>();
+        List<TaskInstanceDO> userTasks = new LinkedList<>();
         for (Process process : processes) {
             List<FlowElement> flowElementList = (List<FlowElement>) process.getFlowElements();
             for (FlowElement flowElement : flowElementList) {
                 if (flowElement.getClass().equals(UserTask.class)) {
                     UserTask userTask = (UserTask) flowElement;
-                    UserTaskDO task = new UserTaskDO();
+                    TaskInstanceDO task = new TaskInstanceDO();
                     task.setId(userTask.getId());
                     task.setName(userTask.getName());
-                    task.setFlowId(id);
+                    task.setFlowInstanceId(id);
                     userTasks.add(task);
                 }
             }
