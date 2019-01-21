@@ -13,6 +13,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 流程集成测试
  * Created by suyaqiang on 2019/1/11.
@@ -31,8 +34,13 @@ public class ProcessIT {
     public void test() {
 
         String businessKey = String.valueOf(System.currentTimeMillis());
+        Map vs = new HashMap();
+        vs.put("customerId", "8987324");
+        vs.put("serviceId", "190117000002011");
+        vs.put("cityId", "110000");
+
         String instanceId = runtimeService.startProcessInstanceById("myProcess:1:3",
-                businessKey).getProcessInstanceId();
+                businessKey, vs).getProcessInstanceId();
 
         // 处理任务
         Task task = taskService.createTaskQuery().processInstanceId(instanceId).list().get(0);

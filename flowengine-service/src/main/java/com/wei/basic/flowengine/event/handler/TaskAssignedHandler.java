@@ -2,7 +2,7 @@ package com.wei.basic.flowengine.event.handler;
 
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.Producer;
-import com.wei.basic.flowengine.client.domain.UserTaskDO;
+import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
 import com.wei.basic.flowengine.configer.RocketMQProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.delegate.event.ActivitiEntityEvent;
@@ -31,8 +31,8 @@ public class TaskAssignedHandler extends MessageSerializationSupport implements 
     public void handle(ActivitiEvent event) {
         TaskEntity task = (TaskEntity) ((ActivitiEntityEvent) event).getEntity();
 
-        UserTaskDO t = new UserTaskDO();
-        t.setFlowId(task.getProcessInstanceId());
+        TaskInstanceDO t = new TaskInstanceDO();
+        t.setFlowInstanceId(task.getProcessInstanceId());
         t.setName(task.getName());
         t.setId(task.getId());
         t.setStartTime(task.getCreateTime());

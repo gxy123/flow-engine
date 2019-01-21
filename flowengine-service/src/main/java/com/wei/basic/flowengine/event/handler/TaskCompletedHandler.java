@@ -2,20 +2,17 @@ package com.wei.basic.flowengine.event.handler;
 
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.Producer;
-import com.wei.basic.flowengine.client.domain.UserTaskDO;
+import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
 import com.wei.basic.flowengine.configer.RocketMQProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.activiti.engine.delegate.event.ActivitiEntityEvent;
 import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.delegate.event.impl.ActivitiEntityEventImpl;
 import org.activiti.engine.impl.persistence.entity.HistoricActivityInstanceEntity;
-import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
 import static org.activiti.engine.delegate.event.ActivitiEventType.HISTORIC_ACTIVITY_INSTANCE_ENDED;
-import static org.activiti.engine.delegate.event.ActivitiEventType.TASK_COMPLETED;
 
 /**
  * 任务完成事件处理器
@@ -38,8 +35,8 @@ public class TaskCompletedHandler extends MessageSerializationSupport implements
         if (!"userTask".equals(historicInstance.getActivityType())) {
             return;
         }
-        UserTaskDO t = new UserTaskDO();
-        t.setFlowId(historicInstance.getProcessInstanceId());
+        TaskInstanceDO t = new TaskInstanceDO();
+        t.setFlowInstanceId(historicInstance.getProcessInstanceId());
         t.setName(historicInstance.getActivityName());
         t.setId(historicInstance.getId());
         t.setStartTime(historicInstance.getStartTime());
