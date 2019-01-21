@@ -24,8 +24,8 @@ public class TaskInstanceDO extends  MapData {
 
     private String status;
 
-    private Date startDate;
+    private Date startTime;
 
-    private Date endDate;
+    private Date endTime;
 
 }

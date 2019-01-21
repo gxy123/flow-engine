@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
+import java.text.SimpleDateFormat;
+
 import static org.activiti.engine.delegate.event.ActivitiEventType.TASK_CREATED;
 
 /**
@@ -41,19 +43,11 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
         t.setId(task.getId());
         t.setProcessDefinitionId(task.getProcessDefinitionId());
         t.setTaskDefinitionKey(task.getTaskDefinitionKey());
-        t.setStartDate(task.getCreateTime());
+        t.setStartTime(task.getCreateTime());
         t.setVariables(task.getVariables());
         ObjectMapper mapper = new ObjectMapper();
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"));
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        String message = "";
-        try {
-            message = mapper.writeValueAsString(t);
-        } catch (JsonProcessingException e) {
-            log.error("serialize fail", e);
-        }
-        t.setStartTime(task.getCreateTime());
-
         String message = serialize(t);
         Message m = new Message(mqProperties.getTopic(), "TASK_CREATED", message.getBytes());
         messageProducer.send(m);
