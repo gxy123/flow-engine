@@ -12,15 +12,15 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
-import static org.activiti.engine.delegate.event.ActivitiEventType.TASK_CREATED;
+import static org.activiti.engine.delegate.event.ActivitiEventType.TASK_ASSIGNED;
 
 /**
- * 任务创建事件处理器
+ * 任务分派事件处理器
  * Created by suyaqiang on 2019/1/18.
  */
 @Slf4j
 @Component
-public class TaskCreatedHandler extends MessageSerializationSupport implements EventHandler {
+public class TaskAssignedHandler extends MessageSerializationSupport implements EventHandler {
 
     @Resource
     private Producer messageProducer;
@@ -38,15 +38,15 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
         t.setStartTime(task.getCreateTime());
 
         String message = serialize(t);
-        Message m = new Message(mqProperties.getTopic(), "TASK_CREATED", message.getBytes());
+        Message m = new Message(mqProperties.getTopic(), "TASK_ASSIGNED", message.getBytes());
         messageProducer.send(m);
 
-        log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), "TASK_CREATED");
+        log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), "TASK_ASSIGNED");
     }
 
     @Override
     public boolean supports(ActivitiEvent event) {
-        return TASK_CREATED.equals(event.getType());
+        return TASK_ASSIGNED.equals(event.getType());
     }
 
 }
