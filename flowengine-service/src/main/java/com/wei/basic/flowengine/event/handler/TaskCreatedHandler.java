@@ -15,16 +15,16 @@ import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
 
 import static org.activiti.engine.delegate.event.ActivitiEventType.TASK_CREATED;
 
 /**
+ * 任务创建事件处理器
  * Created by suyaqiang on 2019/1/18.
  */
 @Slf4j
 @Component
-public class TaskCreatedHandler implements EventHandler {
+public class TaskCreatedHandler extends MessageSerializationSupport implements EventHandler {
 
     @Resource
     private Producer messageProducer;
@@ -52,6 +52,9 @@ public class TaskCreatedHandler implements EventHandler {
         } catch (JsonProcessingException e) {
             log.error("serialize fail", e);
         }
+        t.setStartTime(task.getCreateTime());
+
+        String message = serialize(t);
         Message m = new Message(mqProperties.getTopic(), "TASK_CREATED", message.getBytes());
         messageProducer.send(m);
 
