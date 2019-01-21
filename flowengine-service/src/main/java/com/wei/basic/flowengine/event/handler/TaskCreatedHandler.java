@@ -2,11 +2,9 @@ package com.wei.basic.flowengine.event.handler;
 
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.Producer;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
-import com.wei.basic.flowengine.client.domain.UserTaskDO;
 import com.wei.basic.flowengine.configer.RocketMQProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.delegate.event.ActivitiEntityEvent;
@@ -15,7 +13,6 @@ import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-
 import java.text.SimpleDateFormat;
 
 import static org.activiti.engine.delegate.event.ActivitiEventType.TASK_CREATED;
