@@ -14,7 +14,7 @@ eureka:
     prefer-ip-address: true
 spring:
   application:
-    name: flow-engine
+    name: flowengine-api
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver

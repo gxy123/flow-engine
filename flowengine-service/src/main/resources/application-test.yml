@@ -14,7 +14,7 @@ eureka:
     hostname: ${spring.cloud.client.ip-address}
 spring:
   application:
-    name: flow-engine
+    name: flowengine-api
   datasource:
       type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: com.mysql.jdbc.Driver
@@ -49,3 +49,12 @@ spring:
       max-request-size: 10Mb
 mybatis:
     mapperLocations: classpath:mapper/**/*.xml
+
+# rocketmq
+rocketmq:
+    producer:
+      access-key: i3xR4RSOyYNBPZSb
+      secret-key: kU1Wd69jUH56ACMk0uqJi2lxA34R3g
+      ons-address: http://onsaddr-internet.aliyun.com/rocketmq/nsaddr4client-internet
+      producer-id: PID-flow-engine-state-producer-test
+      topic: flow-engine-state-topic-test
