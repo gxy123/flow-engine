@@ -41,7 +41,7 @@ public class ProcessStartedHandler implements EventHandler {
         started.setId(event.getProcessInstanceId());
         started.setStartTime(instance.getStartTime());
         started.setBusinessKey(instance.getBusinessKey());
-
+        started.setVariables(instance.getVariables());
         ObjectMapper mapper = new ObjectMapper();
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"));
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

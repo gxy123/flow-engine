@@ -11,7 +11,7 @@ import java.util.Map;
  * Created by suyaqiang on 2019/1/8.
  */
 @Data
-public class ProcessInstanceDO {
+public class ProcessInstanceDO extends  MapData {
 
     private String id;
 
@@ -25,5 +25,4 @@ public class ProcessInstanceDO {
 
     private Date endTime;
 
-    private Map<String, Object> variables;
 }

@@ -5,6 +5,7 @@ import com.aliyun.openservices.ons.api.Producer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
 import com.wei.basic.flowengine.client.domain.UserTaskDO;
 import com.wei.basic.flowengine.configer.RocketMQProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -34,12 +35,14 @@ public class TaskCreatedHandler implements EventHandler {
     public void handle(ActivitiEvent event) {
         TaskEntity task = (TaskEntity) ((ActivitiEntityEvent) event).getEntity();
 
-        UserTaskDO t = new UserTaskDO();
-        t.setFlowId(task.getProcessInstanceId());
+        TaskInstanceDO t = new TaskInstanceDO();
+        t.setFlowInstanceId(task.getProcessInstanceId());
         t.setName(task.getName());
         t.setId(task.getId());
-        t.setStartTime(task.getCreateTime());
-
+        t.setProcessDefinitionId(task.getProcessDefinitionId());
+        t.setTaskDefinitionKey(task.getTaskDefinitionKey());
+        t.setStartDate(task.getCreateTime());
+        t.setVariables(task.getVariables());
         ObjectMapper mapper = new ObjectMapper();
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"));
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
