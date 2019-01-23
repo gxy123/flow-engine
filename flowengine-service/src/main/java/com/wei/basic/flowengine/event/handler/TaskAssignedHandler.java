@@ -36,6 +36,7 @@ public class TaskAssignedHandler extends MessageSerializationSupport implements 
         t.setName(task.getName());
         t.setId(task.getId());
         t.setStartTime(task.getCreateTime());
+        t.setAssignee(Long.valueOf(task.getAssignee()));
 
         String message = serialize(t);
         Message m = new Message(mqProperties.getTopic(), "TASK_ASSIGNED", message.getBytes());
