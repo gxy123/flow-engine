@@ -3,7 +3,7 @@ package com.wei.basic.flowengine.event.handler;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.Producer;
 import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
-import com.wei.basic.flowengine.configer.RocketMQProperties;
+import com.wei.basic.flowengine.configer.MqProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.delegate.event.ActivitiEntityEvent;
 import org.activiti.engine.delegate.event.ActivitiEvent;
@@ -25,7 +25,7 @@ public class TaskAssignedHandler extends MessageSerializationSupport implements 
     @Resource
     private Producer messageProducer;
     @Resource
-    private RocketMQProperties mqProperties;
+    private MqProperties mqProperties;
 
     @Override
     public void handle(ActivitiEvent event) {

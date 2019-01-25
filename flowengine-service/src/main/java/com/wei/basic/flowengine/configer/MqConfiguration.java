@@ -17,10 +17,10 @@ import static com.aliyun.openservices.ons.api.PropertyKeyConst.SecretKey;
 
 @Slf4j
 @Configuration
-public class RocketMQConfiguration {
+public class MqConfiguration {
 
     @Resource
-    private RocketMQProperties mqProperties;
+    private MqProperties mqProperties;
 
     private Properties confProps;
 

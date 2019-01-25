@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 @ConfigurationProperties("rocketmq.producer")
-public class RocketMQProperties {
+public class MqProperties {
 
     private String consumerId;
     private String producerId;

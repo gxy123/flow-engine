@@ -5,7 +5,7 @@ import com.aliyun.openservices.ons.api.Producer;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wei.basic.flowengine.client.domain.ProcessInstanceDO;
-import com.wei.basic.flowengine.configer.RocketMQProperties;
+import com.wei.basic.flowengine.configer.MqProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.delegate.event.ActivitiProcessStartedEvent;
@@ -29,7 +29,7 @@ public class ProcessStartedHandler extends MessageSerializationSupport implement
     private Producer messageProducer;
 
     @Resource
-    private RocketMQProperties mqProperties;
+    private MqProperties mqProperties;
 
     @Override
     public void handle(ActivitiEvent event) {
