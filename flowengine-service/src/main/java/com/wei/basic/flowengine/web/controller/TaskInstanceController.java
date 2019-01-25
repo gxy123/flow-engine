@@ -13,11 +13,7 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.websocket.server.PathParam;
@@ -73,9 +69,9 @@ public class TaskInstanceController {
     @ApiOperation(value = "节点改派", httpMethod = "POST", notes = "节点改派")
     @PostMapping("{taskId}/setAssignee")
     public CommonResult setAssignee(
-            @PathVariable String taskId, @PathParam(value = "ownerId") String userid) {
+            @PathVariable String taskId, @RequestParam String userId) {
         try {
-            taskService.setAssignee(taskId, userid);
+            taskService.setAssignee(taskId, userId);
         } catch (Exception e) {
            log.info("Modification anomaly taskId:{}",taskId);
            return CommonResult.errorReturn("改派异常");
