@@ -46,8 +46,8 @@ public class FlowInstanceController {
     @ApiOperation(value = "发起一个流程实例",httpMethod = "POST",notes = "发起一个流程实例")
     @PostMapping("start")
     public CommonResult<ProcessInstanceDO> start(@RequestBody ProcessInstanceDO instanceCmd) {
-        StartProcessInstanceCmd cmd = new StartProcessInstanceCmd(null,
-                instanceCmd.getProcessDefinitionId(),
+        StartProcessInstanceCmd cmd = new StartProcessInstanceCmd(instanceCmd.getProcessDefinitionId(),
+               null,
                 instanceCmd.getVariables(), instanceCmd.getBusinessKey());
         ProcessInstance processInstance = processEngine.startProcess(cmd);
         ProcessInstanceDO instance = new ProcessInstanceDO();
