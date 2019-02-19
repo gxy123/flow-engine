@@ -1,5 +1,6 @@
 package com.wei.basic.flowengine.web.controller;
 
+import com.wei.basic.flowengine.client.domain.ProcessDefinitionDO;
 import com.wei.basic.flowengine.client.domain.ProcessInstanceDO;
 import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
 import com.wei.basic.flowengine.service.impl.FlowInstanceService;
@@ -12,7 +13,9 @@ import org.activiti.cloud.services.api.model.ProcessInstance;
 import org.activiti.cloud.services.core.ProcessEngineWrapper;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -60,5 +63,20 @@ public class FlowInstanceController {
     @GetMapping("{id}/todotasks")
     public CommonResult<List<TaskInstanceDO>> completeTask(@PathVariable String id) {
         return successReturn(flowInstanceService.getTodoTasks(id));
+    }
+    @ApiOperation(value = "根据key获取某流程定义",httpMethod = "GET",notes = "根据key获取某流程定义")
+    @GetMapping("getProcessDefinitionDO/{key}")
+    public CommonResult<ProcessDefinitionDO> getProcessDefinitionDO(@PathVariable String key) {
+        List<ProcessDefinition> list  =repositoryService.createProcessDefinitionQuery().processDefinitionKey(key).orderByProcessDefinitionVersion().desc().list();
+        if(!CollectionUtils.isEmpty(list)&&list.size()!=0){
+            ProcessDefinition processDef = list.get(0);
+            ProcessDefinitionDO defVo = new ProcessDefinitionDO();
+            defVo.setId(processDef.getId());
+            defVo.setName(processDef.getName());
+            defVo.setKey(processDef.getKey());
+            defVo.setVersion(processDef.getVersion());
+            return CommonResult.successReturn(defVo);
+        }
+        return CommonResult.errorReturn("未找到该流程！");
     }
 }

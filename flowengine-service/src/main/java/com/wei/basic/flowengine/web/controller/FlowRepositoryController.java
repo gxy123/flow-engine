@@ -70,8 +70,7 @@ public class FlowRepositoryController {
     @GetMapping("{id}/tasks")
     public CommonResult<List<TaskInstanceDO>> tasks(@PathVariable String id) {
         org.activiti.engine.repository.ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
-                .processDefinitionId(id)
-                .singleResult();
+                .processDefinitionId(id).singleResult();
         if (processDefinition == null) {
             throw new ActivitiObjectNotFoundException("Unable to find process definition for the given id:'" + id + "'");
         }
@@ -85,6 +84,7 @@ public class FlowRepositoryController {
                     UserTask userTask = (UserTask) flowElement;
                     TaskInstanceDO task = new TaskInstanceDO();
                     task.setId(userTask.getId());
+                    //task.setTaskDefinitionKey(userTask.getFormKey());
                     task.setName(userTask.getName());
                     task.setFlowInstanceId(id);
                     userTasks.add(task);
