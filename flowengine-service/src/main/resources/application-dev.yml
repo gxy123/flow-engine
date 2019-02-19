@@ -57,8 +57,3 @@ rocketmq:
     ons-address: http://onsaddr-internet.aliyun.com/rocketmq/nsaddr4client-internet
     producer-id: PID-flow-engine-state-producer-test
     topic: flow-engine-state-topic-test
-
-
-
-
-
