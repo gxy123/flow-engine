@@ -22,6 +22,8 @@ public class TaskInstanceDO extends  MapData {
 
     private String processDefinitionId;
 
+    private String processDefinitionKey;
+
     private Long assignee;
 
     private String status;

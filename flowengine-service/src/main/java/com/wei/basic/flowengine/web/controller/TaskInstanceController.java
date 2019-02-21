@@ -13,10 +13,12 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.websocket.server.PathParam;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -67,16 +69,23 @@ public class TaskInstanceController {
     }
 
     @ApiOperation(value = "节点改派", httpMethod = "POST", notes = "节点改派")
-    @PostMapping("{taskId}/setAssignee")
-    public CommonResult setAssignee(
-            @PathVariable String taskId, @RequestParam String userId) {
+    @RequestMapping("setAssignee")
+    public CommonResult<Boolean> setAssignee(
+            @RequestParam("taskId") String taskId, @RequestParam("userId") Long userId) {
         try {
-            taskService.setAssignee(taskId, userId);
+            taskService.setAssignee(taskId, userId.toString());
         } catch (Exception e) {
            log.info("Modification anomaly taskId:{}",taskId);
            return CommonResult.errorReturn("改派异常");
         }
         return successReturn(true);
+    }
+
+    @ApiOperation(value = "获取代办的任务列表（暂不提供使用）", httpMethod = "GET", notes = "获取代办的任务列表（暂不提供使用）")
+    @GetMapping("/getRunTasks")
+    public CommonResult<List<TaskInstanceDO>> getRunTasks() {
+        List<TaskInstanceDO> list =flowInstanceService.getRunTask();
+        return successReturn(list);
     }
 
 }

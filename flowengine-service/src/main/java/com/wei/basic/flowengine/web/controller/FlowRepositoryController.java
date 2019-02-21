@@ -14,6 +14,7 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -69,11 +70,12 @@ public class FlowRepositoryController {
     @ApiOperation(value = "根据流程ProcessDefinitionId获取该流程的所有节点", httpMethod = "GET", notes = "根据流程ProcessDefinitionId获取该流程的所有节点")
     @GetMapping("{id}/tasks")
     public CommonResult<List<TaskInstanceDO>> tasks(@PathVariable String id) {
-        org.activiti.engine.repository.ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
-                .processDefinitionId(id).singleResult();
-        if (processDefinition == null) {
-            throw new ActivitiObjectNotFoundException("Unable to find process definition for the given id:'" + id + "'");
+        List<ProcessDefinition> processDefinitions =repositoryService.createProcessDefinitionQuery()
+                .processDefinitionId(id).orderByProcessDefinitionVersion().desc().list();
+        if(CollectionUtils.isEmpty(processDefinitions)||processDefinitions.size()==0){
+            return  CommonResult.errorReturn("未找到该流程！");
         }
+        org.activiti.engine.repository.ProcessDefinition processDefinition = processDefinitions.get(0);
 
         List<Process> processes = repositoryService.getBpmnModel(id).getProcesses();
         List<TaskInstanceDO> userTasks = new LinkedList<>();
