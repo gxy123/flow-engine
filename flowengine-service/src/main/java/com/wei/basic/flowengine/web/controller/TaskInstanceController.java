@@ -49,7 +49,7 @@ public class TaskInstanceController {
      * 返回正在进行的tasks
      */
     @ApiOperation(value = "提交任务", httpMethod = "POST", notes = "提交任务")
-    @PostMapping("{taskId}/complete")
+    @RequestMapping("complete")
     public CommonResult<List<TaskInstanceDO>> completeTask(
             @PathVariable String taskId,
             @RequestBody(required = false) Map<String, Object> variables) {
@@ -82,7 +82,7 @@ public class TaskInstanceController {
     }
 
     @ApiOperation(value = "获取代办的任务列表（暂不提供使用）", httpMethod = "GET", notes = "获取代办的任务列表（暂不提供使用）")
-    @GetMapping("/getRunTasks")
+    @RequestMapping("/getRunTasks")
     public CommonResult<List<TaskInstanceDO>> getRunTasks() {
         List<TaskInstanceDO> list =flowInstanceService.getRunTask();
         return successReturn(list);

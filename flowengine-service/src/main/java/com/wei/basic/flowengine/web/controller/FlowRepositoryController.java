@@ -15,12 +15,7 @@ import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.LinkedList;
@@ -41,7 +36,7 @@ public class FlowRepositoryController {
 
 
     @ApiOperation(value = "发布流程接口", httpMethod = "Post", notes = "发布流程接口")
-    @PostMapping("publish")
+    @RequestMapping("publish")
     public CommonResult<ProcessDefinitionDO> publish(@RequestBody Map<String, String> m) {
         String name = m.get("name");
         String fileString = m.get("fileString");
@@ -68,8 +63,8 @@ public class FlowRepositoryController {
     }
 
     @ApiOperation(value = "根据流程ProcessDefinitionId获取该流程的所有节点", httpMethod = "GET", notes = "根据流程ProcessDefinitionId获取该流程的所有节点")
-    @GetMapping("{id}/tasks")
-    public CommonResult<List<TaskInstanceDO>> tasks(@PathVariable String id) {
+    @RequestMapping("tasks")
+    public CommonResult<List<TaskInstanceDO>> tasks(@RequestParam("id") String id) {
         List<ProcessDefinition> processDefinitions =repositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(id).orderByProcessDefinitionVersion().desc().list();
         if(CollectionUtils.isEmpty(processDefinitions)||processDefinitions.size()==0){

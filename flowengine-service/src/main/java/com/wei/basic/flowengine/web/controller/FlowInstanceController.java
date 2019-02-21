@@ -16,12 +16,7 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -60,13 +55,13 @@ public class FlowInstanceController {
         return successReturn(instance);
     }
     @ApiOperation(value = "获取某流程实例未完成的节点列表",httpMethod = "GET",notes = "获取某流程实例未完成的节点列表")
-    @GetMapping("{id}/todotasks")
-    public CommonResult<List<TaskInstanceDO>> completeTask(@PathVariable String id) {
+    @RequestMapping("todotasks")
+    public CommonResult<List<TaskInstanceDO>> completeTask(@RequestParam("id") String id) {
         return successReturn(flowInstanceService.getTodoTasks(id));
     }
     @ApiOperation(value = "根据key获取某流程定义",httpMethod = "GET",notes = "根据key获取某流程定义")
-    @GetMapping("getProcessDefinitionDO/{key}")
-    public CommonResult<ProcessDefinitionDO> getProcessDefinitionDO(@PathVariable String key) {
+    @RequestMapping("getProcessDefinitionDO")
+    public CommonResult<ProcessDefinitionDO> getProcessDefinitionDO(@RequestParam("key") String key) {
         List<ProcessDefinition> list  =repositoryService.createProcessDefinitionQuery().processDefinitionKey(key).orderByProcessDefinitionVersion().desc().list();
         if(!CollectionUtils.isEmpty(list)&&list.size()!=0){
             ProcessDefinition processDef = list.get(0);
