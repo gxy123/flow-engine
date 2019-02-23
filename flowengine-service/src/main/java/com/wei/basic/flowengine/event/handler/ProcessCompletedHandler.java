@@ -30,6 +30,7 @@ public class ProcessCompletedHandler extends MessageSerializationSupport impleme
 
     @Override
     public void handle(ActivitiEvent event) {
+        System.out.println("流程实例结束事件...");
         // 此处首先拿到的executionId不是根的
         HistoricProcessInstanceEntity instance = (HistoricProcessInstanceEntity) ((ActivitiEntityEventImpl) event).getEntity();
         ProcessInstanceDO completed = new ProcessInstanceDO();

@@ -36,7 +36,7 @@ public class FlowRepositoryController {
 
 
     @ApiOperation(value = "发布流程接口", httpMethod = "Post", notes = "发布流程接口")
-    @RequestMapping("publish")
+    @RequestMapping(value = "publish",method = RequestMethod.POST)
     public CommonResult<ProcessDefinitionDO> publish(@RequestBody Map<String, String> m) {
         String name = m.get("name");
         String fileString = m.get("fileString");
@@ -63,7 +63,7 @@ public class FlowRepositoryController {
     }
 
     @ApiOperation(value = "根据流程ProcessDefinitionId获取该流程的所有节点", httpMethod = "GET", notes = "根据流程ProcessDefinitionId获取该流程的所有节点")
-    @RequestMapping("tasks")
+    @RequestMapping(value="tasks",method = RequestMethod.GET)
     public CommonResult<List<TaskInstanceDO>> tasks(@RequestParam("id") String id) {
         List<ProcessDefinition> processDefinitions =repositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(id).orderByProcessDefinitionVersion().desc().list();
