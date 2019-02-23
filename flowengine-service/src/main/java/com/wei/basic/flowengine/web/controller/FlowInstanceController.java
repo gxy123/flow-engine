@@ -37,8 +37,6 @@ public class FlowInstanceController {
     @Autowired
     private ProcessEngineWrapper processEngine;
     @Resource
-    private HistoryService historyService;
-    @Resource
     private FlowInstanceService flowInstanceService;
 
     @ApiOperation(value = "发起一个流程实例",httpMethod = "POST",notes = "发起一个流程实例")
