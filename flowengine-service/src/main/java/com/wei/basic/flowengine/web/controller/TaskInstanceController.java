@@ -81,10 +81,15 @@ public class TaskInstanceController {
         return successReturn(true);
     }
 
-    @ApiOperation(value = "获取代办的任务列表（暂不提供使用）", httpMethod = "GET", notes = "获取代办的任务列表（暂不提供使用）")
+    @ApiOperation(value = "获取引擎里的任务列表（异常数据处理使用）", httpMethod = "GET", notes = "获取引擎里的任务列表（异常数据处理使用）")
     @RequestMapping(value = "getRunTasks",method = RequestMethod.GET)
-    public CommonResult<List<TaskInstanceDO>> getRunTasks() {
-        List<TaskInstanceDO> list =flowInstanceService.getRunTask();
+    public CommonResult<List<TaskInstanceDO>> getRunTasks(@RequestParam Boolean isrunning) {
+        List<TaskInstanceDO> list = new ArrayList<>();
+        if(isrunning){
+            list=flowInstanceService.getRunTask();
+        }else{
+            list=flowInstanceService.HistoricTasks();
+        }
         return successReturn(list);
     }
 

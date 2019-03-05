@@ -74,6 +74,7 @@ public class FlowInstanceService {
                 instanceDO.setName(t.getName());
                 instanceDO.setStartTime(t.getCreateTime());
                 instanceDO.setTaskDefinitionKey(t.getTaskDefinitionKey());
+                instanceDO.setStatus("2");
                 List<ProcessDefinition> processDefinitions =repositoryService.createProcessDefinitionQuery()
                         .processDefinitionId(t.getProcessDefinitionId()).orderByProcessDefinitionVersion().desc().list();
                 if(!CollectionUtils.isEmpty(processDefinitions)&&processDefinitions.size()!=0){
@@ -85,5 +86,29 @@ public class FlowInstanceService {
             }
         }
         return  taskInstanceDOS;
+    }
+    public List<TaskInstanceDO> HistoricTasks() {
+        List<TaskInstanceDO> taskInstanceDOList = new ArrayList<>();
+        List<HistoricTaskInstance> tasks = historyService.createHistoricTaskInstanceQuery().finished().list();
+        if(!CollectionUtils.isEmpty(tasks)&&tasks.size()!=0){
+            for (HistoricTaskInstance t : tasks) {
+                TaskInstanceDO instanceDO = new TaskInstanceDO();
+                instanceDO.setId(t.getId());
+                instanceDO.setFlowInstanceId(t.getProcessInstanceId());
+                instanceDO.setName(t.getName());
+                instanceDO.setStartTime(t.getCreateTime());
+                instanceDO.setTaskDefinitionKey(t.getTaskDefinitionKey());
+                instanceDO.setStatus("1");
+                List<ProcessDefinition> processDefinitions =repositoryService.createProcessDefinitionQuery()
+                        .processDefinitionId(t.getProcessDefinitionId()).orderByProcessDefinitionVersion().desc().list();
+                if(!CollectionUtils.isEmpty(processDefinitions)&&processDefinitions.size()!=0){
+                    org.activiti.engine.repository.ProcessDefinition processDefinition = processDefinitions.get(0);
+                    instanceDO.setProcessDefinitionKey(processDefinition.getKey());
+                }
+
+                taskInstanceDOList.add(instanceDO);
+            }
+        }
+        return  taskInstanceDOList;
     }
 }

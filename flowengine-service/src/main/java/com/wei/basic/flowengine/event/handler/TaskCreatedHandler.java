@@ -47,6 +47,7 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
         t.setId(task.getId());
         t.setProcessDefinitionId(task.getProcessDefinitionId());
         t.setTaskDefinitionKey(task.getTaskDefinitionKey());
+        t.setStatus("2");
         List<ProcessDefinition> processDefinitions =repositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(t.getProcessDefinitionId()).orderByProcessDefinitionVersion().desc().list();
         if(!CollectionUtils.isEmpty(processDefinitions)&&processDefinitions.size()!=0){
