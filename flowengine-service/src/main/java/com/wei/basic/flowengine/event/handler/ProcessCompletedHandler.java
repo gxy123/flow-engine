@@ -41,7 +41,7 @@ public class ProcessCompletedHandler extends MessageSerializationSupport impleme
         completed.setVariables(instance.getProcessVariables());
 
         String message = serialize(completed);
-        Message m = new Message(mqProperties.getTopic(), "HISTORIC_PROCESS_INSTANCE_ENDED", message.getBytes());
+        Message m = new Message(mqProperties.getTopic(), "PROCESS_COMPLETED", message.getBytes());
         messageProducer.send(m);
 
         log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), "HISTORIC_PROCESS_INSTANCE_ENDED");
