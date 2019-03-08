@@ -16,6 +16,9 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.wei.basic.flowengine.client.domain.TaskInstanceDO.STATUS_DOING;
+import static com.wei.basic.flowengine.client.domain.TaskInstanceDO.STATUS_FINISHED;
+
 /**
  * Created by suyaqiang on 2019/1/9.
  */
@@ -74,7 +77,7 @@ public class FlowInstanceService {
                 instanceDO.setName(t.getName());
                 instanceDO.setStartTime(t.getCreateTime());
                 instanceDO.setTaskDefinitionKey(t.getTaskDefinitionKey());
-                instanceDO.setStatus("2");
+                instanceDO.setStatus(STATUS_DOING.toString());
                 List<ProcessDefinition> processDefinitions =repositoryService.createProcessDefinitionQuery()
                         .processDefinitionId(t.getProcessDefinitionId()).orderByProcessDefinitionVersion().desc().list();
                 if(!CollectionUtils.isEmpty(processDefinitions)&&processDefinitions.size()!=0){
@@ -98,7 +101,7 @@ public class FlowInstanceService {
                 instanceDO.setName(t.getName());
                 instanceDO.setStartTime(t.getCreateTime());
                 instanceDO.setTaskDefinitionKey(t.getTaskDefinitionKey());
-                instanceDO.setStatus("1");
+                instanceDO.setStatus(STATUS_FINISHED.toString());
                 List<ProcessDefinition> processDefinitions =repositoryService.createProcessDefinitionQuery()
                         .processDefinitionId(t.getProcessDefinitionId()).orderByProcessDefinitionVersion().desc().list();
                 if(!CollectionUtils.isEmpty(processDefinitions)&&processDefinitions.size()!=0){
