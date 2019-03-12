@@ -35,8 +35,7 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
     private Producer messageProducer;
     @Resource
     private MqProperties mqProperties;
-    @Autowired
-    private RepositoryService repositoryService;
+    private RepositoryService repositoryService; // TODO 循环依赖
 
     @Override
     public void handle(ActivitiEvent event) {
