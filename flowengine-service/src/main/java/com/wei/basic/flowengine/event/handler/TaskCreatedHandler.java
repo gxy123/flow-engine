@@ -34,7 +34,7 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
     private Producer messageProducer;
     @Resource
     private MqProperties mqProperties;
-    @Resource
+//    @Resource
     private RepositoryService repositoryService;
 
     @Override
