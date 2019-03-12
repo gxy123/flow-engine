@@ -5,7 +5,6 @@ import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.delegate.event.ActivitiEventListener;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -14,7 +13,6 @@ import java.util.List;
 @Component
 public class UnifiedEventListener implements ActivitiEventListener {
 
-    @Resource
     private List<EventHandler> handlers;
 
     @Override
@@ -32,4 +30,7 @@ public class UnifiedEventListener implements ActivitiEventListener {
         return false;
     }
 
+    public void setHandlers(List<EventHandler> handlers) {
+        this.handlers = handlers;
+    }
 }
