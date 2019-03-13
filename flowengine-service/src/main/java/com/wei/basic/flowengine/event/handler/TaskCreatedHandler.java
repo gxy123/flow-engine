@@ -14,7 +14,6 @@ import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
@@ -48,9 +47,9 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
         t.setProcessDefinitionId(task.getProcessDefinitionId());
         t.setTaskDefinitionKey(task.getTaskDefinitionKey());
         t.setStatus("2");
-        List<ProcessDefinition> processDefinitions =repositoryService.createProcessDefinitionQuery()
+        List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(t.getProcessDefinitionId()).orderByProcessDefinitionVersion().desc().list();
-        if(!CollectionUtils.isEmpty(processDefinitions)&&processDefinitions.size()!=0){
+        if (!CollectionUtils.isEmpty(processDefinitions) && processDefinitions.size() != 0) {
             org.activiti.engine.repository.ProcessDefinition processDefinition = processDefinitions.get(0);
             t.setProcessDefinitionKey(processDefinition.getKey());
         }
