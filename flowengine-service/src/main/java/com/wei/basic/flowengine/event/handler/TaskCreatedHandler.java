@@ -12,7 +12,6 @@ import org.activiti.engine.delegate.event.ActivitiEntityEvent;
 import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.repository.ProcessDefinition;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +34,8 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
     private Producer messageProducer;
     @Resource
     private MqProperties mqProperties;
-    private RepositoryService repositoryService; // TODO 循环依赖
+    @Resource
+    private RepositoryService repositoryService;
 
     @Override
     public void handle(ActivitiEvent event) {
