@@ -1,18 +1,16 @@
 package com.wei.basic.flowengine.service.impl;
 
 import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
-import com.wei.client.base.CommonResult;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
-import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,12 +23,12 @@ import static com.wei.basic.flowengine.client.domain.TaskInstanceDO.STATUS_FINIS
 @Service
 public class FlowInstanceService {
 
-    @Resource
+    @Autowired
     private TaskService taskService;
-    @Resource
+    @Autowired
     private HistoryService historyService;
 
-    @Resource
+    @Autowired
     private RepositoryService repositoryService;
 
     public List<TaskInstanceDO> getTodoTasks(String instanceId) {

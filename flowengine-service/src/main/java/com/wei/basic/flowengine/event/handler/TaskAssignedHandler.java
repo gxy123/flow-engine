@@ -8,9 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.delegate.event.ActivitiEntityEvent;
 import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 
 import static org.activiti.engine.delegate.event.ActivitiEventType.TASK_ASSIGNED;
 
@@ -22,9 +21,9 @@ import static org.activiti.engine.delegate.event.ActivitiEventType.TASK_ASSIGNED
 @Component
 public class TaskAssignedHandler extends MessageSerializationSupport implements EventHandler {
 
-    @Resource
+    @Autowired
     private Producer messageProducer;
-    @Resource
+    @Autowired
     private MqProperties mqProperties;
 
     @Override

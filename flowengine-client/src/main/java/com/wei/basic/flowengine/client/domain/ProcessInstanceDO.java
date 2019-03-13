@@ -4,7 +4,6 @@ package com.wei.basic.flowengine.client.domain;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.Map;
 
 /**
  * 流程定义 VO

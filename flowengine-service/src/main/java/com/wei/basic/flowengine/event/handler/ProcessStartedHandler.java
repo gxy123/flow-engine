@@ -10,9 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.delegate.event.ActivitiProcessStartedEvent;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 
 import static org.activiti.engine.delegate.event.ActivitiEventType.PROCESS_STARTED;
@@ -25,10 +25,10 @@ import static org.activiti.engine.delegate.event.ActivitiEventType.PROCESS_START
 @Slf4j
 public class ProcessStartedHandler extends MessageSerializationSupport implements EventHandler {
 
-    @Resource
+    @Autowired
     private Producer messageProducer;
 
-    @Resource
+    @Autowired
     private MqProperties mqProperties;
 
     @Override
