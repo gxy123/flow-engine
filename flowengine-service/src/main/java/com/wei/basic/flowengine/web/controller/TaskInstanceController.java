@@ -1,7 +1,7 @@
 package com.wei.basic.flowengine.web.controller;
 
 import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
-import com.wei.basic.flowengine.service.impl.FlowInstanceService;
+import com.wei.basic.flowengine.service.FlowInstanceService;
 import com.wei.client.base.CommonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,11 +13,12 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
-import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,15 +34,15 @@ import static com.wei.client.base.CommonResult.successReturn;
 @Slf4j
 public class TaskInstanceController {
 
-    @Resource
+    @Autowired
     private RepositoryService repositoryService;
     @Autowired
     private ProcessEngineWrapper processEngine;
-    @Resource
+    @Autowired
     private TaskService taskService;
-    @Resource
+    @Autowired
     private HistoryService historyService;
-    @Resource
+    @Autowired
     private FlowInstanceService flowInstanceService;
 
 

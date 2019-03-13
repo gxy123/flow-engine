@@ -3,7 +3,7 @@ package com.wei.basic.flowengine.web.controller;
 import com.wei.basic.flowengine.client.domain.ProcessDefinitionDO;
 import com.wei.basic.flowengine.client.domain.ProcessInstanceDO;
 import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
-import com.wei.basic.flowengine.service.impl.FlowInstanceService;
+import com.wei.basic.flowengine.service.FlowInstanceService;
 import com.wei.client.base.CommonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,14 +11,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.activiti.cloud.services.api.commands.StartProcessInstanceCmd;
 import org.activiti.cloud.services.api.model.ProcessInstance;
 import org.activiti.cloud.services.core.ProcessEngineWrapper;
-import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 import static com.wei.client.base.CommonResult.successReturn;
@@ -32,11 +35,11 @@ import static com.wei.client.base.CommonResult.successReturn;
 @Slf4j
 public class FlowInstanceController {
 
-    @Resource
+    @Autowired
     private RepositoryService repositoryService;
     @Autowired
     private ProcessEngineWrapper processEngine;
-    @Resource
+    @Autowired
     private FlowInstanceService flowInstanceService;
 
     @ApiOperation(value = "发起一个流程实例",httpMethod = "POST",notes = "发起一个流程实例")

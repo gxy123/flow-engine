@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Primary;
  */
 @Configuration
 @ComponentScan(basePackages = {
+        "com.wei.common.util",  // 加载ApplicationContextUtil这个lowbe设计
         "com.wei.basic.flowengine",
         "com.wei.service",
         "org.activiti",

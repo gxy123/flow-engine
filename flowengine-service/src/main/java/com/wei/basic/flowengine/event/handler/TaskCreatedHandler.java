@@ -12,11 +12,10 @@ import org.activiti.engine.delegate.event.ActivitiEntityEvent;
 import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -30,10 +29,11 @@ import static org.activiti.engine.delegate.event.ActivitiEventType.TASK_CREATED;
 @Component
 public class TaskCreatedHandler extends MessageSerializationSupport implements EventHandler {
 
-    @Resource
+    @Autowired
     private Producer messageProducer;
-    @Resource
+    @Autowired
     private MqProperties mqProperties;
+
 
     @Override
     public void handle(ActivitiEvent event) {

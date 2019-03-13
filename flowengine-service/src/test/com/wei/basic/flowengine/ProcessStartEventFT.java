@@ -26,7 +26,7 @@ public class ProcessStartEventFT {
     public void test() {
 
 
-        runtimeService.startProcessInstanceById("myProcess:9:5021",
+        runtimeService.startProcessInstanceById("myProcess:1:3",
                 "334455678");
 
 

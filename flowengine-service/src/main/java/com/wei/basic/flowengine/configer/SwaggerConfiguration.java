@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.google.common.collect.Lists;
 import com.wei.common.util.DateUtil;
 import com.wei.service.configure.EnvironmentDefine;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -24,7 +25,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -37,7 +37,7 @@ import java.util.List;
 @EnableSwagger2
 public class SwaggerConfiguration implements WebMvcConfigurer {
 
-    @Resource
+    @Autowired
     private EnvironmentDefine environmentDefine;
 
     @Bean

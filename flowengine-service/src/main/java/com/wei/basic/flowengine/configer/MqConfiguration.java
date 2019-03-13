@@ -3,11 +3,11 @@ package com.wei.basic.flowengine.configer;
 import com.aliyun.openservices.ons.api.ONSFactory;
 import com.aliyun.openservices.ons.api.Producer;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import java.util.Properties;
 
 import static com.aliyun.openservices.ons.api.PropertyKeyConst.AccessKey;
@@ -19,7 +19,7 @@ import static com.aliyun.openservices.ons.api.PropertyKeyConst.SecretKey;
 @Configuration
 public class MqConfiguration {
 
-    @Resource
+    @Autowired
     private MqProperties mqProperties;
 
     private Properties confProps;

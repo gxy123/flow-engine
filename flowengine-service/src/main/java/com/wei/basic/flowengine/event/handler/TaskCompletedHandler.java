@@ -8,9 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.delegate.event.impl.ActivitiEntityEventImpl;
 import org.activiti.engine.impl.persistence.entity.HistoricActivityInstanceEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 
 import static org.activiti.engine.delegate.event.ActivitiEventType.HISTORIC_ACTIVITY_INSTANCE_ENDED;
 
@@ -22,9 +21,9 @@ import static org.activiti.engine.delegate.event.ActivitiEventType.HISTORIC_ACTI
 @Component
 public class TaskCompletedHandler extends MessageSerializationSupport implements EventHandler {
 
-    @Resource
+    @Autowired
     private Producer messageProducer;
-    @Resource
+    @Autowired
     private MqProperties mqProperties;
 
     @Override

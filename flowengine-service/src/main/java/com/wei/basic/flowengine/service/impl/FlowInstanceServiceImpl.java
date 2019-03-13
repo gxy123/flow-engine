@@ -1,18 +1,17 @@
 package com.wei.basic.flowengine.service.impl;
 
 import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
-import com.wei.client.base.CommonResult;
+import com.wei.basic.flowengine.service.FlowInstanceService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
-import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,16 +22,17 @@ import static com.wei.basic.flowengine.client.domain.TaskInstanceDO.STATUS_FINIS
  * Created by suyaqiang on 2019/1/9.
  */
 @Service
-public class FlowInstanceService {
+public class FlowInstanceServiceImpl implements FlowInstanceService {
 
-    @Resource
+    @Autowired
     private TaskService taskService;
-    @Resource
+    @Autowired
     private HistoryService historyService;
 
-    @Resource
+    @Autowired
     private RepositoryService repositoryService;
 
+    @Override
     public List<TaskInstanceDO> getTodoTasks(String instanceId) {
 
         List<HistoricTaskInstance> tasks = historyService.createHistoricTaskInstanceQuery()
@@ -48,9 +48,9 @@ public class FlowInstanceService {
             todoTask.setStartTime(t.getStartTime());
             todoTask.setTaskDefinitionKey(t.getTaskDefinitionKey());
             todoTask.setProcessDefinitionId(t.getProcessDefinitionId());
-            List<ProcessDefinition> processDefinitions =repositoryService.createProcessDefinitionQuery()
+            List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery()
                     .processDefinitionId(t.getProcessDefinitionId()).orderByProcessDefinitionVersion().desc().list();
-            if(!CollectionUtils.isEmpty(processDefinitions)&&processDefinitions.size()!=0){
+            if (!CollectionUtils.isEmpty(processDefinitions) && processDefinitions.size() != 0) {
                 org.activiti.engine.repository.ProcessDefinition processDefinition = processDefinitions.get(0);
                 todoTask.setProcessDefinitionKey(processDefinition.getKey());
             }
@@ -62,14 +62,16 @@ public class FlowInstanceService {
 
     /**
      * 获取所有代办的任务
+     *
      * @return
      */
+    @Override
     public List<TaskInstanceDO> getRunTask() {
         List<TaskInstanceDO> taskInstanceDOS = new ArrayList<>();
         // 保证幂等
-        List<Task> taskList =taskService.createTaskQuery().active().list();
-      //  List<HistoricTaskInstance> list = historyService.createHistoricTaskInstanceQuery().unfinished().list();
-        if(!CollectionUtils.isEmpty(taskList)&&taskList.size()!=0){
+        List<Task> taskList = taskService.createTaskQuery().active().list();
+        //  List<HistoricTaskInstance> list = historyService.createHistoricTaskInstanceQuery().unfinished().list();
+        if (!CollectionUtils.isEmpty(taskList) && taskList.size() != 0) {
             for (Task t : taskList) {
                 TaskInstanceDO instanceDO = new TaskInstanceDO();
                 instanceDO.setId(t.getId());
@@ -78,9 +80,9 @@ public class FlowInstanceService {
                 instanceDO.setStartTime(t.getCreateTime());
                 instanceDO.setTaskDefinitionKey(t.getTaskDefinitionKey());
                 instanceDO.setStatus(STATUS_DOING.toString());
-                List<ProcessDefinition> processDefinitions =repositoryService.createProcessDefinitionQuery()
+                List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery()
                         .processDefinitionId(t.getProcessDefinitionId()).orderByProcessDefinitionVersion().desc().list();
-                if(!CollectionUtils.isEmpty(processDefinitions)&&processDefinitions.size()!=0){
+                if (!CollectionUtils.isEmpty(processDefinitions) && processDefinitions.size() != 0) {
                     org.activiti.engine.repository.ProcessDefinition processDefinition = processDefinitions.get(0);
                     instanceDO.setProcessDefinitionKey(processDefinition.getKey());
                 }
@@ -88,12 +90,14 @@ public class FlowInstanceService {
                 taskInstanceDOS.add(instanceDO);
             }
         }
-        return  taskInstanceDOS;
+        return taskInstanceDOS;
     }
+
+    @Override
     public List<TaskInstanceDO> HistoricTasks() {
         List<TaskInstanceDO> taskInstanceDOList = new ArrayList<>();
         List<HistoricTaskInstance> tasks = historyService.createHistoricTaskInstanceQuery().finished().list();
-        if(!CollectionUtils.isEmpty(tasks)&&tasks.size()!=0){
+        if (!CollectionUtils.isEmpty(tasks) && tasks.size() != 0) {
             for (HistoricTaskInstance t : tasks) {
                 TaskInstanceDO instanceDO = new TaskInstanceDO();
                 instanceDO.setId(t.getId());
@@ -102,9 +106,9 @@ public class FlowInstanceService {
                 instanceDO.setStartTime(t.getCreateTime());
                 instanceDO.setTaskDefinitionKey(t.getTaskDefinitionKey());
                 instanceDO.setStatus(STATUS_FINISHED.toString());
-                List<ProcessDefinition> processDefinitions =repositoryService.createProcessDefinitionQuery()
+                List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery()
                         .processDefinitionId(t.getProcessDefinitionId()).orderByProcessDefinitionVersion().desc().list();
-                if(!CollectionUtils.isEmpty(processDefinitions)&&processDefinitions.size()!=0){
+                if (!CollectionUtils.isEmpty(processDefinitions) && processDefinitions.size() != 0) {
                     org.activiti.engine.repository.ProcessDefinition processDefinition = processDefinitions.get(0);
                     instanceDO.setProcessDefinitionKey(processDefinition.getKey());
                 }
@@ -112,6 +116,6 @@ public class FlowInstanceService {
                 taskInstanceDOList.add(instanceDO);
             }
         }
-        return  taskInstanceDOList;
+        return taskInstanceDOList;
     }
 }

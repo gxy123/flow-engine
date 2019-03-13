@@ -3,9 +3,10 @@ package com.wei.basic.flowengine.event.listener;
 import com.wei.basic.flowengine.event.handler.EventHandler;
 import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.delegate.event.ActivitiEventListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -14,7 +15,8 @@ import java.util.List;
 @Component
 public class UnifiedEventListener implements ActivitiEventListener {
 
-    @Resource
+    @Lazy
+    @Autowired
     private List<EventHandler> handlers;
 
     @Override
