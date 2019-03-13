@@ -12,6 +12,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.activiti.spring.ProcessEngineFactoryBean;
 import org.activiti.spring.SpringProcessEngineConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -28,6 +29,7 @@ public class ActivitiConfiguration {
     public ProcessEngineConfiguration processEngineConfiguration(
             DataSource dataSource,
             PlatformTransactionManager transactionManager,
+            @Autowired
             UnifiedEventListener eventListener) {
         SpringProcessEngineConfiguration processEngineConfiguration = new SpringProcessEngineConfiguration();
         processEngineConfiguration.setDataSource(dataSource);
