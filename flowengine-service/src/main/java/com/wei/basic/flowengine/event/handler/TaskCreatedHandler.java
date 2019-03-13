@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
 import com.wei.basic.flowengine.configer.MqProperties;
+import com.wei.common.util.ApplicationContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.delegate.event.ActivitiEntityEvent;
@@ -15,7 +16,9 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -33,8 +36,13 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
     private Producer messageProducer;
     @Autowired
     private MqProperties mqProperties;
-    @Autowired
     private RepositoryService repositoryService;
+
+    @PostConstruct
+    public void a() {
+        repositoryService = ApplicationContextUtil.getBean(RepositoryService.class);
+    }
+
 
     @Override
     public void handle(ActivitiEvent event) {
