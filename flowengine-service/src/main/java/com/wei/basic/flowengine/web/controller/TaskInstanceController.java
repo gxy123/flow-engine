@@ -1,7 +1,7 @@
 package com.wei.basic.flowengine.web.controller;
 
 import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
-import com.wei.basic.flowengine.service.impl.FlowInstanceService;
+import com.wei.basic.flowengine.service.FlowInstanceService;
 import com.wei.client.base.CommonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

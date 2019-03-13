@@ -21,7 +21,7 @@ import static com.wei.basic.flowengine.client.domain.TaskInstanceDO.STATUS_FINIS
  * Created by suyaqiang on 2019/1/9.
  */
 @Service
-public class FlowInstanceService {
+public class FlowInstanceServiceImpl implements com.wei.basic.flowengine.service.FlowInstanceService {
 
     @Autowired
     private TaskService taskService;
@@ -31,6 +31,7 @@ public class FlowInstanceService {
     @Autowired
     private RepositoryService repositoryService;
 
+    @Override
     public List<TaskInstanceDO> getTodoTasks(String instanceId) {
 
         List<HistoricTaskInstance> tasks = historyService.createHistoricTaskInstanceQuery()
@@ -62,6 +63,7 @@ public class FlowInstanceService {
      * 获取所有代办的任务
      * @return
      */
+    @Override
     public List<TaskInstanceDO> getRunTask() {
         List<TaskInstanceDO> taskInstanceDOS = new ArrayList<>();
         // 保证幂等
@@ -88,6 +90,7 @@ public class FlowInstanceService {
         }
         return  taskInstanceDOS;
     }
+    @Override
     public List<TaskInstanceDO> HistoricTasks() {
         List<TaskInstanceDO> taskInstanceDOList = new ArrayList<>();
         List<HistoricTaskInstance> tasks = historyService.createHistoricTaskInstanceQuery().finished().list();
