@@ -34,12 +34,11 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
     private Producer messageProducer;
     @Resource
     private MqProperties mqProperties;
-    @Resource
-    private RepositoryService repositoryService;
 
     @Override
     public void handle(ActivitiEvent event) {
         TaskEntity task = (TaskEntity) ((ActivitiEntityEvent) event).getEntity();
+
         System.out.println("任务创建事件.....");
         TaskInstanceDO t = new TaskInstanceDO();
         t.setFlowInstanceId(task.getProcessInstanceId());
@@ -48,13 +47,8 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
         t.setProcessDefinitionId(task.getProcessDefinitionId());
         t.setTaskDefinitionKey(task.getTaskDefinitionKey());
         t.setStatus("2");
-        List<ProcessDefinition> processDefinitions =repositoryService.createProcessDefinitionQuery()
-                .processDefinitionId(t.getProcessDefinitionId()).orderByProcessDefinitionVersion().desc().list();
-        if(!CollectionUtils.isEmpty(processDefinitions)&&processDefinitions.size()!=0){
-            org.activiti.engine.repository.ProcessDefinition processDefinition = processDefinitions.get(0);
-            t.setProcessDefinitionKey(processDefinition.getKey());
-        }
 
+        t.setProcessDefinitionKey(task.getProcessInstance().getProcessDefinitionKey());
         t.setStartTime(task.getCreateTime());
         t.setVariables(task.getVariables());
         ObjectMapper mapper = new ObjectMapper();
