@@ -7,18 +7,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
 import com.wei.basic.flowengine.configer.MqProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.activiti.engine.RepositoryService;
 import org.activiti.engine.delegate.event.ActivitiEntityEvent;
 import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
-import org.activiti.engine.repository.ProcessDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 
+import static com.wei.basic.flowengine.client.domain.TaskInstanceDO.STATUS_DOING;
 import static org.activiti.engine.delegate.event.ActivitiEventType.TASK_CREATED;
 
 /**
@@ -33,27 +30,18 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
     private Producer messageProducer;
     @Autowired
     private MqProperties mqProperties;
-    @Autowired
-    private RepositoryService repositoryService;
-
 
     @Override
     public void handle(ActivitiEvent event) {
         TaskEntity task = (TaskEntity) ((ActivitiEntityEvent) event).getEntity();
-        System.out.println("任务创建事件.....");
         TaskInstanceDO t = new TaskInstanceDO();
         t.setFlowInstanceId(task.getProcessInstanceId());
         t.setName(task.getName());
         t.setId(task.getId());
         t.setProcessDefinitionId(task.getProcessDefinitionId());
         t.setTaskDefinitionKey(task.getTaskDefinitionKey());
-        t.setStatus("2");
-        List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery()
-                .processDefinitionId(t.getProcessDefinitionId()).orderByProcessDefinitionVersion().desc().list();
-        if (!CollectionUtils.isEmpty(processDefinitions) && processDefinitions.size() != 0) {
-            org.activiti.engine.repository.ProcessDefinition processDefinition = processDefinitions.get(0);
-            t.setProcessDefinitionKey(processDefinition.getKey());
-        }
+        t.setStatus(STATUS_DOING);
+        t.setProcessDefinitionKey(task.getProcessInstance().getProcessDefinitionKey());
 
         t.setStartTime(task.getCreateTime());
         t.setVariables(task.getVariables());
