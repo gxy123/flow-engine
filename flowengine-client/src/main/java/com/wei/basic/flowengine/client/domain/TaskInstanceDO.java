@@ -11,10 +11,15 @@ import java.util.Date;
  */
 @Data
 public class TaskInstanceDO extends  MapData {
-    public static final Integer STATUS_FINISHED = 1;//完成
-    public static final Integer STATUS_PAUSED = 3;//暂停
-    public static final Integer STATUS_DOING = 2;//进行中
-    public static final Integer STATUS_HALT = 4;//终止
+
+    /** 进行中 */
+    public static final Integer STATUS_DOING = 1;
+    /** 暂停 */
+    public static final Integer STATUS_PAUSED = 2;
+    /** 终止 */
+    public static final Integer STATUS_HALT = 3;
+    /** 已完成 */
+    public static final Integer STATUS_FINISHED = 4;
 
     private String id;
 
@@ -30,7 +35,7 @@ public class TaskInstanceDO extends  MapData {
 
     private Long assignee;
 
-    private String status;
+    private Integer status;
 
     private Date startTime;
 

@@ -79,7 +79,7 @@ public class FlowInstanceServiceImpl implements FlowInstanceService {
                 instanceDO.setName(t.getName());
                 instanceDO.setStartTime(t.getCreateTime());
                 instanceDO.setTaskDefinitionKey(t.getTaskDefinitionKey());
-                instanceDO.setStatus(STATUS_DOING.toString());
+                instanceDO.setStatus(STATUS_DOING);
                 List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery()
                         .processDefinitionId(t.getProcessDefinitionId()).orderByProcessDefinitionVersion().desc().list();
                 if (!CollectionUtils.isEmpty(processDefinitions) && processDefinitions.size() != 0) {
@@ -105,7 +105,7 @@ public class FlowInstanceServiceImpl implements FlowInstanceService {
                 instanceDO.setName(t.getName());
                 instanceDO.setStartTime(t.getCreateTime());
                 instanceDO.setTaskDefinitionKey(t.getTaskDefinitionKey());
-                instanceDO.setStatus(STATUS_FINISHED.toString());
+                instanceDO.setStatus(STATUS_FINISHED);
                 List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery()
                         .processDefinitionId(t.getProcessDefinitionId()).orderByProcessDefinitionVersion().desc().list();
                 if (!CollectionUtils.isEmpty(processDefinitions) && processDefinitions.size() != 0) {
