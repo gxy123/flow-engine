@@ -6,9 +6,10 @@ import com.wei.client.base.CommonResult;
 import com.wei.common.annotaion.Validate;
 import com.wei.common.annotaion.ValidateType;
 import com.wei.common.util.HttpClientUtil;
-import com.wei.common.util.SessionUtil;
 import com.wei.passport.client.define.PassportHostDef;
+import com.wei.passport.client.define.UserTypeDef;
 import com.wei.passport.client.value.ValidateVO;
+import com.wei.passport.session.SessionUtil;
 import com.wei.service.configure.EnvironmentDefine;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -17,18 +18,19 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
 /**
  * @author wangqiaobin
  * @date 2016/12/10
@@ -38,7 +40,7 @@ import java.util.Objects;
 @Configuration
 public class DefaultHttpRequestAspect {
 
-    @Autowired
+    @Resource
     private EnvironmentDefine environmentDefine;
 
     @Pointcut("@annotation(com.wei.common.annotaion.Validate)")
@@ -58,18 +60,18 @@ public class DefaultHttpRequestAspect {
         boolean validated = true;
         if (annotation != null && annotation.action().equals(ValidateType.DEFAULT)) {
             //默认校验规则
-            validated = Objects.nonNull(validate) && !validate.getIsEmployer();
+            validated = Objects.nonNull(validate) && validate.getUserType().equals(UserTypeDef.DEFAULT);
         }
         if (annotation != null && annotation.action().equals(ValidateType.EMPLOYER)) {
             //员工接口校验规则
-            validated = Objects.nonNull(validate) && validate.getIsEmployer();
+            validated = Objects.nonNull(validate) && validate.getUserType().equals(UserTypeDef.EMPLOYER);
         }
         if (annotation != null && annotation.action().equals(ValidateType.SIGN)) {
             //签名校验
         }
         if (validated) {
             if (validate != null) {
-                SessionUtil.setRequestContext(null, null, validate.getUserId(), validate.getUserType(), validate.getUserPermit(), validate.getIsAdmin());
+                SessionUtil.setRequestContext(validate);
             }
         }
         if (annotation != null && !validated && !annotation.action().equals(ValidateType.MISS)) {
@@ -77,12 +79,8 @@ public class DefaultHttpRequestAspect {
             result.setTraceId(MDC.get("traceId"));
             return result;
         }
-        Object proceed;
-        try {
-            proceed = point.proceed();
-        } finally {
-            SessionUtil.clear();
-        }
+        //执行下一步
+        Object proceed = point.proceed();
         if (proceed != null && proceed.getClass().isAssignableFrom(CommonResult.class)) {
             ((CommonResult) proceed).setTraceId(MDC.get("traceId"));
         }
