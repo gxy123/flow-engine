@@ -71,7 +71,7 @@ public class DefaultHttpRequestAspect {
         }
         if (validated) {
             if (validate != null) {
-                SessionUtil.setRequestContext(validate);
+                SessionUtil.setRequestContext(new ValidateVO());
             }
         }
         if (annotation != null && !validated && !annotation.action().equals(ValidateType.MISS)) {

@@ -14,13 +14,11 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties("rocketmq.producer")
 public class MqProperties {
 
-    private String consumerId;
-    private String producerId;
+    private String groupId;
     private String accessKey;
     private String secretKey;
     private String onsAddress;
     private Integer consumeThreadNumbers;
-    private String topic;
-    private String tag;
+    private String topic; // 广播消息总线topic
 
 }

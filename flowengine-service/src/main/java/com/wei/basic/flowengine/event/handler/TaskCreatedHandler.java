@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 
+import static com.wei.basic.flowengine.client.define.FlowEngineMessageTagDefine.TAG_TASK_CREATED;
 import static com.wei.basic.flowengine.client.domain.TaskInstanceDO.STATUS_DOING;
 import static org.activiti.engine.delegate.event.ActivitiEventType.TASK_CREATED;
 
@@ -49,10 +50,10 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"));
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String message = serialize(t);
-        Message m = new Message(mqProperties.getTopic(), "TASK_CREATED", message.getBytes());
+        Message m = new Message(mqProperties.getTopic(), TAG_TASK_CREATED, message.getBytes());
         messageProducer.send(m);
 
-        log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), "TASK_CREATED");
+        log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), TAG_TASK_CREATED);
     }
 
     @Override

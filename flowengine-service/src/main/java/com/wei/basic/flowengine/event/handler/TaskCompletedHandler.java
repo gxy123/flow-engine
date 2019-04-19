@@ -11,6 +11,7 @@ import org.activiti.engine.impl.persistence.entity.HistoricActivityInstanceEntit
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static com.wei.basic.flowengine.client.define.FlowEngineMessageTagDefine.TAG_TASK_COMPLETED;
 import static org.activiti.engine.delegate.event.ActivitiEventType.HISTORIC_ACTIVITY_INSTANCE_ENDED;
 
 /**
@@ -42,10 +43,10 @@ public class TaskCompletedHandler extends MessageSerializationSupport implements
         t.setEndTime(historicInstance.getEndTime());
 
         String message = serialize(t);
-        Message m = new Message(mqProperties.getTopic(), "HISTORIC_ACTIVITY_INSTANCE_ENDED", message.getBytes());
+        Message m = new Message(mqProperties.getTopic(), TAG_TASK_COMPLETED, message.getBytes());
         messageProducer.send(m);
 
-        log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), "HISTORIC_ACTIVITY_INSTANCE_ENDED");
+        log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), TAG_TASK_COMPLETED);
     }
 
     @Override

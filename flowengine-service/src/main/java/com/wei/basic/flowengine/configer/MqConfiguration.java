@@ -11,8 +11,8 @@ import javax.annotation.PostConstruct;
 import java.util.Properties;
 
 import static com.aliyun.openservices.ons.api.PropertyKeyConst.AccessKey;
+import static com.aliyun.openservices.ons.api.PropertyKeyConst.GROUP_ID;
 import static com.aliyun.openservices.ons.api.PropertyKeyConst.ONSAddr;
-import static com.aliyun.openservices.ons.api.PropertyKeyConst.ProducerId;
 import static com.aliyun.openservices.ons.api.PropertyKeyConst.SecretKey;
 
 @Slf4j
@@ -26,7 +26,7 @@ public class MqConfiguration {
 
     @Bean
     public Producer messageProducer() {
-        confProps.setProperty(ProducerId, mqProperties.getProducerId());
+        confProps.setProperty(GROUP_ID, mqProperties.getGroupId());
         Producer producer = ONSFactory.createProducer(confProps);
         producer.start();
         log.info("rocket mq producer started");

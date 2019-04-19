@@ -38,7 +38,7 @@ public class FlowRepositoryController {
     private RepositoryService repositoryService;
 
 
-    @ApiOperation(value = "发布流程接口", httpMethod = "Post", notes = "发布流程接口")
+    @ApiOperation(value = "发布流程接口", httpMethod = "POST", notes = "发布流程接口")
     @RequestMapping(value = "publish",method = RequestMethod.POST)
     public CommonResult<ProcessDefinitionDO> publish(@RequestBody Map<String, String> m) {
         String name = m.get("name");

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 
+import static com.wei.basic.flowengine.client.define.FlowEngineMessageTagDefine.TAG_PROCESS_STARTED;
 import static org.activiti.engine.delegate.event.ActivitiEventType.PROCESS_STARTED;
 
 /**
@@ -46,10 +47,10 @@ public class ProcessStartedHandler extends MessageSerializationSupport implement
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"));
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String message = serialize(started);
-        Message m = new Message(mqProperties.getTopic(), "PROCESS_STARTED", message.getBytes());
+        Message m = new Message(mqProperties.getTopic(), TAG_PROCESS_STARTED, message.getBytes());
         messageProducer.send(m);
 
-        log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), "PROCESS_STARTED");
+        log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), TAG_PROCESS_STARTED);
     }
 
     @Override

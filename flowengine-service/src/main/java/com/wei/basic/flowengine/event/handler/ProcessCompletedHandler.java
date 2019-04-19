@@ -11,6 +11,7 @@ import org.activiti.engine.impl.persistence.entity.HistoricProcessInstanceEntity
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static com.wei.basic.flowengine.client.define.FlowEngineMessageTagDefine.TAG_PROCESS_COMPLETED;
 import static org.activiti.engine.delegate.event.ActivitiEventType.HISTORIC_PROCESS_INSTANCE_ENDED;
 
 /**
@@ -40,10 +41,10 @@ public class ProcessCompletedHandler extends MessageSerializationSupport impleme
         completed.setVariables(instance.getProcessVariables());
 
         String message = serialize(completed);
-        Message m = new Message(mqProperties.getTopic(), "PROCESS_COMPLETED", message.getBytes());
+        Message m = new Message(mqProperties.getTopic(), TAG_PROCESS_COMPLETED, message.getBytes());
         messageProducer.send(m);
 
-        log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), "HISTORIC_PROCESS_INSTANCE_ENDED");
+        log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), TAG_PROCESS_COMPLETED);
     }
 
     @Override

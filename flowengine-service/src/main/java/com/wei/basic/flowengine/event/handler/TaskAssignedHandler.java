@@ -11,6 +11,7 @@ import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static com.wei.basic.flowengine.client.define.FlowEngineMessageTagDefine.TAG_TASK_ASSIGNED;
 import static org.activiti.engine.delegate.event.ActivitiEventType.TASK_ASSIGNED;
 
 /**
@@ -38,10 +39,10 @@ public class TaskAssignedHandler extends MessageSerializationSupport implements 
         t.setAssignee(Long.valueOf(task.getAssignee()));
 
         String message = serialize(t);
-        Message m = new Message(mqProperties.getTopic(), "TASK_ASSIGNED", message.getBytes());
+        Message m = new Message(mqProperties.getTopic(), TAG_TASK_ASSIGNED, message.getBytes());
         messageProducer.send(m);
 
-        log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), "TASK_ASSIGNED");
+        log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), TAG_TASK_ASSIGNED);
     }
 
     @Override
