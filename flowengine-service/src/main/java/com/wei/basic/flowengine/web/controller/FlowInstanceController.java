@@ -64,8 +64,8 @@ public class FlowInstanceController {
     }
 
     @ApiOperation(value = "根据key获取某流程定义", httpMethod = "GET", notes = "根据key获取某流程定义")
-    @RequestMapping(value = "getProcessDefinitionDO", method = RequestMethod.GET)
-    public CommonResult<ProcessDefinitionDO> getProcessDefinitionDO(@RequestParam("key") String key) {
+    @RequestMapping(value = "getProcessDefinition", method = RequestMethod.GET)
+    public CommonResult<ProcessDefinitionDO> getProcessDefinition(@RequestParam("key") String key) {
         List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery().processDefinitionKey(key).orderByProcessDefinitionVersion().desc().list();
         if (!CollectionUtils.isEmpty(list) && list.size() != 0) {
             ProcessDefinition processDef = list.get(0);
