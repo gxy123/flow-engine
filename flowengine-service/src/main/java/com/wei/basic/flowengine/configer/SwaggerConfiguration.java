@@ -58,24 +58,6 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
                 .build().globalOperationParameters(pars);
     }
 
-    @Bean
-    public Docket activitiCloudApi() {
-        ParameterBuilder ticketPar = new ParameterBuilder();
-        List<Parameter> pars = Lists.newArrayList();
-        ticketPar.name("City").description("城市")
-                .modelRef(new ModelRef("string")).parameterType("header").defaultValue("1")
-                .required(false).build();
-        pars.add(ticketPar.build());
-        return new Docket(DocumentationType.SWAGGER_2)
-                .enable(environmentDefine.isTest() || environmentDefine.isDev())
-                .groupName("activiti Cloud API")
-                .apiInfo(apiInfo())
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("org.activiti.cloud.services"))
-                .paths(PathSelectors.any())
-                .build().globalOperationParameters(pars);
-    }
-
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("后端技术文档[flowengine-server]")

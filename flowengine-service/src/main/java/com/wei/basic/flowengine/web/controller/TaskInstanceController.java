@@ -6,10 +6,7 @@ import com.wei.client.base.CommonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.activiti.cloud.services.api.commands.CompleteTaskCmd;
-import org.activiti.cloud.services.core.ProcessEngineWrapper;
 import org.activiti.engine.HistoryService;
-import org.activiti.engine.RepositoryService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +32,6 @@ import static com.wei.client.base.CommonResult.successReturn;
 public class TaskInstanceController {
 
     @Autowired
-    private RepositoryService repositoryService;
-    @Autowired
-    private ProcessEngineWrapper processEngine;
-    @Autowired
     private TaskService taskService;
     @Autowired
     private HistoryService historyService;
@@ -50,7 +43,7 @@ public class TaskInstanceController {
      * 返回正在进行的tasks
      */
     @ApiOperation(value = "提交任务", httpMethod = "POST", notes = "提交任务")
-    @RequestMapping(value="complete",method = RequestMethod.POST)
+    @RequestMapping(value = "complete", method = RequestMethod.POST)
     public CommonResult<List<TaskInstanceDO>> completeTask(
             @RequestParam("taskId") String taskId,
             @RequestBody(required = false) Map<String, Object> variables) {
@@ -61,7 +54,7 @@ public class TaskInstanceController {
                 .unfinished()
                 .singleResult();
         if (null != todo) {
-            processEngine.completeTask(new CompleteTaskCmd(taskId, variables));
+            taskService.complete(taskId, variables);
         }
         String processInstanceId = historyService.createHistoricTaskInstanceQuery().taskId(taskId)
                 .singleResult().getProcessInstanceId();
@@ -70,26 +63,26 @@ public class TaskInstanceController {
     }
 
     @ApiOperation(value = "节点改派", httpMethod = "POST", notes = "节点改派")
-    @RequestMapping(value = "setAssignee",method = RequestMethod.POST)
+    @RequestMapping(value = "setAssignee", method = RequestMethod.POST)
     public CommonResult<Boolean> setAssignee(
             @RequestParam("taskId") String taskId, @RequestParam("userId") Long userId) {
         try {
             taskService.setAssignee(taskId, userId.toString());
         } catch (Exception e) {
-           log.info("Modification anomaly taskId:{}",taskId);
-           return CommonResult.errorReturn("改派异常");
+            log.info("Modification anomaly taskId:{}", taskId);
+            return CommonResult.errorReturn("改派异常");
         }
         return successReturn(true);
     }
 
     @ApiOperation(value = "获取引擎里的任务列表（异常数据处理使用）", httpMethod = "GET", notes = "获取引擎里的任务列表（异常数据处理使用）")
-    @RequestMapping(value = "getRunTasks",method = RequestMethod.GET)
+    @RequestMapping(value = "getRunTasks", method = RequestMethod.GET)
     public CommonResult<List<TaskInstanceDO>> getRunTasks(@RequestParam Boolean isrunning) {
         List<TaskInstanceDO> list = new ArrayList<>();
-        if(isrunning){
-            list=flowInstanceService.getRunTask();
-        }else{
-            list=flowInstanceService.HistoricTasks();
+        if (isrunning) {
+            list = flowInstanceService.getRunTask();
+        } else {
+            list = flowInstanceService.HistoricTasks();
         }
         return successReturn(list);
     }
