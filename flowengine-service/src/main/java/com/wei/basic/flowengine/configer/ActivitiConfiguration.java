@@ -9,6 +9,7 @@ import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.compatibility.DefaultActiviti5CompatibilityHandlerFactory;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.activiti.spring.ProcessEngineFactoryBean;
 import org.activiti.spring.SpringProcessEngineConfiguration;
@@ -23,13 +24,13 @@ import java.util.List;
 @Configuration
 public class ActivitiConfiguration {
 
-
     @Bean
     public ProcessEngineConfiguration processEngineConfiguration(
             DataSource dataSource,
             PlatformTransactionManager transactionManager,
             UnifiedEventListener eventListener) {
         SpringProcessEngineConfiguration processEngineConfiguration = new SpringProcessEngineConfiguration();
+        processEngineConfiguration.setActiviti5CompatibilityHandlerFactory(new DefaultActiviti5CompatibilityHandlerFactory());
         processEngineConfiguration.setDataSource(dataSource);
         processEngineConfiguration.setDatabaseSchemaUpdate("true");
         processEngineConfiguration.setDatabaseType("mysql");
