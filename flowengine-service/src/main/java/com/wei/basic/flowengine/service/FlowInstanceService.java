@@ -1,6 +1,7 @@
 package com.wei.basic.flowengine.service;
 
 import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
+import com.wei.client.base.CommonResult;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface FlowInstanceService {
 
     List<TaskInstanceDO> getTodoTasks(String instanceId);
 
-    List<TaskInstanceDO> getRunTask();
+    CommonResult<List<TaskInstanceDO>> getRunTask(String processDefinitionKey, int pageNum, int pageSize);
 
-    List<TaskInstanceDO> HistoricTasks();
+    CommonResult<List<TaskInstanceDO>> HistoricTasks(String processDefinitionKey,int pageNum,int pageSize);
 }

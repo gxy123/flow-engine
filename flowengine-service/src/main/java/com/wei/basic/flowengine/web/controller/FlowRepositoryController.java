@@ -10,6 +10,7 @@ import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.Process;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.impl.persistence.deploy.DeploymentManager;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.apache.commons.codec.binary.Base64;
@@ -36,6 +37,7 @@ public class FlowRepositoryController {
 
     @Autowired
     private RepositoryService repositoryService;
+
 
 
     @ApiOperation(value = "发布流程接口", httpMethod = "POST", notes = "发布流程接口")
@@ -65,17 +67,18 @@ public class FlowRepositoryController {
         return CommonResult.successReturn(defVo);
     }
 
-    @ApiOperation(value = "根据流程ProcessDefinitionId获取该流程的所有节点", httpMethod = "GET", notes = "根据流程ProcessDefinitionId获取该流程的所有节点")
+    @ApiOperation(value = "根据流程ProcessDefinitionKey获取该流程的所有节点", httpMethod = "GET", notes = "根据流程ProcessDefinitionKey获取该流程的所有节点")
     @RequestMapping(value="tasks",method = RequestMethod.GET)
-    public CommonResult<List<TaskInstanceDO>> tasks(@RequestParam("id") String id) {
+    public CommonResult<List<TaskInstanceDO>> tasks(@RequestParam("key") String key) {
+
         List<ProcessDefinition> processDefinitions =repositoryService.createProcessDefinitionQuery()
-                .processDefinitionId(id).orderByProcessDefinitionVersion().desc().list();
+                .processDefinitionKey(key).orderByProcessDefinitionVersion().desc().list();
         if(CollectionUtils.isEmpty(processDefinitions)||processDefinitions.size()==0){
             return  CommonResult.errorReturn("未找到该流程！");
         }
         org.activiti.engine.repository.ProcessDefinition processDefinition = processDefinitions.get(0);
 
-        List<Process> processes = repositoryService.getBpmnModel(id).getProcesses();
+        List<Process> processes = repositoryService.getBpmnModel(processDefinition.getId()).getProcesses();
         List<TaskInstanceDO> userTasks = new LinkedList<>();
         for (Process process : processes) {
             List<FlowElement> flowElementList = (List<FlowElement>) process.getFlowElements();
@@ -86,7 +89,7 @@ public class FlowRepositoryController {
                     task.setId(userTask.getId());
                     //task.setTaskDefinitionKey(userTask.getFormKey());
                     task.setName(userTask.getName());
-                    task.setFlowInstanceId(id);
+                    task.setFlowInstanceId(process.getId());
                     userTasks.add(task);
                 }
             }

@@ -77,14 +77,13 @@ public class TaskInstanceController {
 
     @ApiOperation(value = "获取引擎里的任务列表（异常数据处理使用）", httpMethod = "GET", notes = "获取引擎里的任务列表（异常数据处理使用）")
     @RequestMapping(value = "getRunTasks", method = RequestMethod.GET)
-    public CommonResult<List<TaskInstanceDO>> getRunTasks(@RequestParam Boolean isrunning) {
+    public CommonResult<List<TaskInstanceDO>> getRunTasks(@RequestParam String processDefinitionKey ,@RequestParam Boolean isrunning,@RequestParam Integer pageNum,@RequestParam Integer pageSize) {
         List<TaskInstanceDO> list = new ArrayList<>();
         if (isrunning) {
-            list = flowInstanceService.getRunTask();
+            return flowInstanceService.getRunTask(processDefinitionKey,pageNum,pageSize);
         } else {
-            list = flowInstanceService.HistoricTasks();
+            return flowInstanceService.HistoricTasks(processDefinitionKey,pageNum,pageSize);
         }
-        return successReturn(list);
     }
 
 }
