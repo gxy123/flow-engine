@@ -69,12 +69,12 @@ public class FlowInstanceServiceImpl implements FlowInstanceService {
      */
     @Override
     public CommonResult<List<TaskInstanceDO>> getRunTask(String processDefinitionKey, int pageNum, int pageSize) {
-        CommonResult<List<TaskInstanceDO>> commonResult =new CommonResult<>();
+        CommonResult<List<TaskInstanceDO>> commonResult = new CommonResult<>();
         List<TaskInstanceDO> taskInstanceDOS = new ArrayList<>();
         // 保证幂等
-        Long  count = historyService.createHistoricTaskInstanceQuery().unfinished().processDefinitionKey(processDefinitionKey).count();
+        Long count = historyService.createHistoricTaskInstanceQuery().unfinished().processDefinitionKey(processDefinitionKey).count();
         commonResult.setTotal(Integer.valueOf(count.toString()));
-          List<HistoricTaskInstance> list = historyService.createHistoricTaskInstanceQuery().unfinished().processDefinitionKey(processDefinitionKey).listPage(pageNum,pageSize);
+        List<HistoricTaskInstance> list = historyService.createHistoricTaskInstanceQuery().unfinished().processDefinitionKey(processDefinitionKey).listPage(pageNum, pageSize);
         if (!CollectionUtils.isEmpty(list) && list.size() != 0) {
             for (HistoricTaskInstance t : list) {
                 TaskInstanceDO instanceDO = new TaskInstanceDO();
@@ -85,12 +85,12 @@ public class FlowInstanceServiceImpl implements FlowInstanceService {
                 instanceDO.setTaskDefinitionKey(t.getTaskDefinitionKey());
                 instanceDO.setVariables(t.getTaskLocalVariables());
                 instanceDO.setProcessDefinitionId(t.getProcessDefinitionId());
-                if(!StringUtils.isEmpty(t.getAssignee())){
+                if (!StringUtils.isEmpty(t.getAssignee())) {
                     instanceDO.setAssignee(Long.valueOf(t.getAssignee()));
                 }
 
                 instanceDO.setStatus(STATUS_DOING);
-                if(!StringUtils.isEmpty(t.getProcessDefinitionId())){
+                if (!StringUtils.isEmpty(t.getProcessDefinitionId())) {
                     instanceDO.setProcessDefinitionKey(t.getProcessDefinitionId().split(":")[0]);
                 }
 
@@ -98,17 +98,18 @@ public class FlowInstanceServiceImpl implements FlowInstanceService {
                 taskInstanceDOS.add(instanceDO);
             }
             commonResult.setResult(taskInstanceDOS);
+            commonResult.setSuccess(true);
         }
         return commonResult;
     }
 
     @Override
-    public CommonResult<List<TaskInstanceDO>> HistoricTasks(String processDefinitionKey,int pageNum,int pageSize) {
-        CommonResult<List<TaskInstanceDO>> commonResult =new CommonResult<>();
+    public CommonResult<List<TaskInstanceDO>> HistoricTasks(String processDefinitionKey, int pageNum, int pageSize) {
+        CommonResult<List<TaskInstanceDO>> commonResult = new CommonResult<>();
         List<TaskInstanceDO> taskInstanceDOList = new ArrayList<>();
-        Long count =historyService.createHistoricTaskInstanceQuery().finished().processDefinitionKey(processDefinitionKey).count();
+        Long count = historyService.createHistoricTaskInstanceQuery().finished().processDefinitionKey(processDefinitionKey).count();
         commonResult.setTotal(Integer.valueOf(count.toString()));
-        List<HistoricTaskInstance> tasks = historyService.createHistoricTaskInstanceQuery().finished().processDefinitionKey(processDefinitionKey).listPage(pageNum,pageSize);
+        List<HistoricTaskInstance> tasks = historyService.createHistoricTaskInstanceQuery().finished().processDefinitionKey(processDefinitionKey).listPage(pageNum, pageSize);
         if (!CollectionUtils.isEmpty(tasks) && tasks.size() != 0) {
             for (HistoricTaskInstance t : tasks) {
                 TaskInstanceDO instanceDO = new TaskInstanceDO();
@@ -121,10 +122,10 @@ public class FlowInstanceServiceImpl implements FlowInstanceService {
                 instanceDO.setVariables(t.getTaskLocalVariables());
                 instanceDO.setProcessDefinitionId(t.getProcessDefinitionId());
                 instanceDO.setEndTime(t.getEndTime());
-                if(!StringUtils.isEmpty(t.getAssignee())){
+                if (!StringUtils.isEmpty(t.getAssignee())) {
                     instanceDO.setAssignee(Long.valueOf(t.getAssignee()));
                 }
-                if(!StringUtils.isEmpty(t.getProcessDefinitionId())){
+                if (!StringUtils.isEmpty(t.getProcessDefinitionId())) {
                     instanceDO.setProcessDefinitionKey(t.getProcessDefinitionId().split(":")[0]);
                 }
 
