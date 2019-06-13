@@ -69,7 +69,7 @@ public class TaskInstanceController {
         try {
             taskService.setAssignee(taskId, userId.toString());
         } catch (Exception e) {
-            log.info("Modification anomaly taskId:{}", taskId);
+            log.error("Modification anomaly taskId:{},msg:{}", taskId,e.getMessage());
             return CommonResult.errorReturn("改派异常");
         }
         return successReturn(true);
