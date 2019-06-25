@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +78,10 @@ public class FlowInstanceController {
             return CommonResult.successReturn(defVo);
         }
         return CommonResult.errorReturn("未找到该流程！");
+    }
+    @ApiOperation(value = "获取流程实例列表根据实例ids", httpMethod = "GET", notes = "获取流程实例列表根据实例ids")
+    @RequestMapping("getFlowInstancesByProcInstIds")
+    public CommonResult<List<ProcessInstanceDO>> getFlowInstancesByProcInstIds(@RequestParam("ProcInstIds") List<String> ProcInstIds) {
+        return flowInstanceService.getProcessInstances(ProcInstIds);
     }
 }

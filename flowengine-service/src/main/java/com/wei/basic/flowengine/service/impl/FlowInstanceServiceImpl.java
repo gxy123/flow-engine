@@ -1,11 +1,14 @@
 package com.wei.basic.flowengine.service.impl;
 
+import com.wei.basic.flowengine.client.domain.ProcessInstanceDO;
 import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
 import com.wei.basic.flowengine.service.FlowInstanceService;
 import com.wei.client.base.CommonResult;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
@@ -14,8 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.wei.basic.flowengine.client.domain.TaskInstanceDO.STATUS_DOING;
 import static com.wei.basic.flowengine.client.domain.TaskInstanceDO.STATUS_FINISHED;
@@ -134,5 +137,31 @@ public class FlowInstanceServiceImpl implements FlowInstanceService {
             commonResult.setResult(taskInstanceDOList);
         }
         return commonResult;
+    }
+
+    @Override
+    public CommonResult<List<ProcessInstanceDO>> getProcessInstances(List<String> processInstanceIds) {
+        if (CollectionUtils.isEmpty(processInstanceIds)) {
+            return CommonResult.successReturn(null);
+        }
+        Set<String> set = new HashSet<>(processInstanceIds);
+        HistoricProcessInstanceQuery historicProcessQuery = historyService.createHistoricProcessInstanceQuery();
+        List<HistoricProcessInstance> list = historicProcessQuery.processInstanceIds(set).list();
+        if (!CollectionUtils.isEmpty(list)) {
+            List<ProcessInstanceDO> processInstanceDOS = new ArrayList<>();
+            processInstanceDOS = list.stream().map(vo -> {
+                ProcessInstanceDO instanceDO = new ProcessInstanceDO();
+                instanceDO.setId(vo.getId());
+                instanceDO.setVariables(vo.getProcessVariables());
+                instanceDO.setBusinessKey(vo.getBusinessKey());
+                instanceDO.setName(vo.getName());
+                instanceDO.setStartTime(vo.getStartTime());
+                instanceDO.setEndTime(vo.getEndTime());
+                instanceDO.setProcessDefinitionId(vo.getProcessDefinitionId());
+                return instanceDO;
+            }).collect(Collectors.toList());
+            return CommonResult.successReturn(processInstanceDOS);
+        }
+        return CommonResult.successReturn(null);
     }
 }
