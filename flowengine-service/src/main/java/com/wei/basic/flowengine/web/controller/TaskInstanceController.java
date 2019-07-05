@@ -44,22 +44,26 @@ public class TaskInstanceController {
      */
     @ApiOperation(value = "提交任务", httpMethod = "POST", notes = "提交任务")
     @RequestMapping(value = "complete", method = RequestMethod.POST)
-    public CommonResult<List<TaskInstanceDO>> completeTask(
+    public CommonResult<String> completeTask(
             @RequestParam("taskId") String taskId,
             @RequestBody(required = false) Map<String, Object> variables) {
 
         // 保证幂等
-        HistoricTaskInstance todo = historyService.createHistoricTaskInstanceQuery()
-                .taskId(taskId)
-                .unfinished()
-                .singleResult();
+        HistoricTaskInstance todo = null;
+        try {
+            todo = historyService.createHistoricTaskInstanceQuery()
+                    .taskId(taskId)
+                    .unfinished()
+                    .singleResult();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
         if (null != todo) {
             taskService.complete(taskId, variables);
         }
         String processInstanceId = historyService.createHistoricTaskInstanceQuery().taskId(taskId)
                 .singleResult().getProcessInstanceId();
-
-        return successReturn(flowInstanceService.getTodoTasks(processInstanceId));
+        return successReturn(processInstanceId);
     }
 
     @ApiOperation(value = "节点改派", httpMethod = "POST", notes = "节点改派")
