@@ -16,6 +16,7 @@ import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,16 +54,25 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
 
         t.setTaskDefinitionKey(task.getTaskDefinitionKey());
         t.setStatus(STATUS_DOING);
-        HistoricProcessInstanceQuery historicProcessQuery = historyService.createHistoricProcessInstanceQuery();
+       /* HistoricProcessInstanceQuery historicProcessQuery = historyService.createHistoricProcessInstanceQuery();
 
 
         HistoricProcessInstanceQuery historicProcessInstanceQuery = historicProcessQuery.processInstanceId(task.getProcessInstanceId());
         if(CollectionUtils.isEmpty(historicProcessInstanceQuery.list())){
             log.error("historic_process_instance_query_empty event={}",event);
             return;
+        }*/
+       // HistoricProcessInstance historicProcessInstance = historicProcessInstanceQuery.list().get(0);
+        if(StringUtils.isEmpty(task.getProcessDefinitionId())){
+            log.error("ProcessDefinitionId_query_empty event={}",event);
+            return;
         }
-        HistoricProcessInstance historicProcessInstance = historicProcessInstanceQuery.list().get(0);
-        t.setProcessDefinitionKey(historicProcessInstance.getProcessDefinitionKey());
+        String defin[] =task.getProcessDefinitionId().split(":");
+        if(defin.length!=3){
+            log.error("ProcessDefinitionId_query_empty event={}",event);
+            return;
+        }
+        t.setProcessDefinitionKey(defin[0]);
         t.setStartTime(new Date());
         t.setVariables(task.getVariables());
         ObjectMapper mapper = new ObjectMapper();
@@ -71,7 +81,7 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
         String message = serialize(t);
         Message m = new Message(mqProperties.getTopic(), TAG_TASK_CREATED, message.getBytes());
         messageProducer.send(m);
-        log.info("FlowInstanceId:{},ProcessDefinitionKey:{}",task.getProcessInstanceId(),task.getProcessInstance().getProcessDefinitionKey());
+        log.info("FlowInstanceId:{},ProcessDefinitionKey:{}",task.getProcessInstanceId(),t.getProcessDefinitionKey());
 
         log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), TAG_TASK_CREATED);
     }
