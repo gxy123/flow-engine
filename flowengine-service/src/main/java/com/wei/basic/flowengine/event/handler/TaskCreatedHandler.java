@@ -41,10 +41,10 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
         t.setName(task.getName());
         t.setId(task.getId());
         t.setProcessDefinitionId(task.getProcessDefinitionId());
+
         t.setTaskDefinitionKey(task.getTaskDefinitionKey());
         t.setStatus(STATUS_DOING);
         t.setProcessDefinitionKey(task.getProcessInstance().getProcessDefinitionKey());
-
         t.setStartTime(new Date());
         t.setVariables(task.getVariables());
         ObjectMapper mapper = new ObjectMapper();
@@ -53,6 +53,7 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
         String message = serialize(t);
         Message m = new Message(mqProperties.getTopic(), TAG_TASK_CREATED, message.getBytes());
         messageProducer.send(m);
+        log.info("FlowInstanceId:{},ProcessDefinitionKey:{}",task.getProcessInstanceId(),task.getProcessInstance().getProcessDefinitionKey());
 
         log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), TAG_TASK_CREATED);
     }
