@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static com.wei.basic.flowengine.client.define.FlowEngineMessageTagDefine.TAG_TASK_CREATED;
 import static com.wei.basic.flowengine.client.domain.TaskInstanceDO.STATUS_DOING;
@@ -44,7 +45,7 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
         t.setStatus(STATUS_DOING);
         t.setProcessDefinitionKey(task.getProcessInstance().getProcessDefinitionKey());
 
-        t.setStartTime(task.getCreateTime());
+        t.setStartTime(new Date());
         t.setVariables(task.getVariables());
         ObjectMapper mapper = new ObjectMapper();
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"));
