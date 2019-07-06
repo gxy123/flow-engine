@@ -7,14 +7,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
 import com.wei.basic.flowengine.configer.MqProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.delegate.event.ActivitiEntityEvent;
 import org.activiti.engine.delegate.event.ActivitiEvent;
+import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
 import static com.wei.basic.flowengine.client.define.FlowEngineMessageTagDefine.TAG_TASK_CREATED;
 import static com.wei.basic.flowengine.client.domain.TaskInstanceDO.STATUS_DOING;
@@ -32,6 +39,8 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
     private Producer messageProducer;
     @Autowired
     private MqProperties mqProperties;
+    @Autowired
+    private HistoryService historyService;
 
     @Override
     public void handle(ActivitiEvent event) {
@@ -44,7 +53,16 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
 
         t.setTaskDefinitionKey(task.getTaskDefinitionKey());
         t.setStatus(STATUS_DOING);
-        t.setProcessDefinitionKey(task.getProcessInstance().getProcessDefinitionKey());
+        HistoricProcessInstanceQuery historicProcessQuery = historyService.createHistoricProcessInstanceQuery();
+
+
+        HistoricProcessInstanceQuery historicProcessInstanceQuery = historicProcessQuery.processInstanceId(task.getProcessInstanceId());
+        if(CollectionUtils.isEmpty(historicProcessInstanceQuery.list())){
+            log.error("historic_process_instance_query_empty event={}",event);
+            return;
+        }
+        HistoricProcessInstance historicProcessInstance = historicProcessInstanceQuery.list().get(0);
+        t.setProcessDefinitionKey(historicProcessInstance.getProcessDefinitionKey());
         t.setStartTime(new Date());
         t.setVariables(task.getVariables());
         ObjectMapper mapper = new ObjectMapper();
