@@ -43,6 +43,7 @@ public class TaskCompletedHandler extends MessageSerializationSupport implements
         t.setEndTime(historicInstance.getEndTime());
 
         String message = serialize(t);
+        log.info("msg={}",message);
         Message m = new Message(mqProperties.getTopic(), TAG_TASK_COMPLETED, message.getBytes());
         messageProducer.send(m);
 
