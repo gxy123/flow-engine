@@ -150,18 +150,36 @@ public class FlowInstanceServiceImpl implements FlowInstanceService {
         if (!CollectionUtils.isEmpty(list)) {
             List<ProcessInstanceDO> processInstanceDOS = new ArrayList<>();
             processInstanceDOS = list.stream().map(vo -> {
-                ProcessInstanceDO instanceDO = new ProcessInstanceDO();
-                instanceDO.setId(vo.getId());
-                instanceDO.setVariables(vo.getProcessVariables());
-                instanceDO.setBusinessKey(vo.getBusinessKey());
-                instanceDO.setName(vo.getName());
-                instanceDO.setStartTime(vo.getStartTime());
-                instanceDO.setEndTime(vo.getEndTime());
-                instanceDO.setProcessDefinitionId(vo.getProcessDefinitionId());
-                return instanceDO;
+                ProcessInstanceDO processInstanceDO = getDO(vo);
+                return processInstanceDO;
             }).collect(Collectors.toList());
             return CommonResult.successReturn(processInstanceDOS);
         }
         return CommonResult.successReturn(null);
     }
+
+    @Override
+    public ProcessInstanceDO getProcessInstancesById(String processInstanceId) {
+        if (StringUtils.isEmpty(processInstanceId)) {
+            return null;
+        }
+        HistoricProcessInstanceQuery historicProcessQuery = historyService.createHistoricProcessInstanceQuery();
+        HistoricProcessInstance vo = historicProcessQuery.processInstanceId(processInstanceId).singleResult();
+        if (Objects.nonNull(vo)) {
+           return getDO(vo);
+        }
+        return null;
+    }
+    private ProcessInstanceDO getDO(HistoricProcessInstance vo){
+        ProcessInstanceDO instanceDO = new ProcessInstanceDO();
+        instanceDO.setId(vo.getId());
+        instanceDO.setVariables(vo.getProcessVariables());
+        instanceDO.setBusinessKey(vo.getBusinessKey());
+        instanceDO.setName(vo.getName());
+        instanceDO.setStartTime(vo.getStartTime());
+        instanceDO.setEndTime(vo.getEndTime());
+        instanceDO.setProcessDefinitionId(vo.getProcessDefinitionId());
+        return instanceDO;
+    }
+
 }

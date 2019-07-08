@@ -19,4 +19,6 @@ public interface FlowInstanceService {
     CommonResult<List<TaskInstanceDO>> HistoricTasks(String processDefinitionKey,int pageNum,int pageSize);
 
     CommonResult<List<ProcessInstanceDO>>getProcessInstances(List<String> processInstanceIds);
+
+    ProcessInstanceDO getProcessInstancesById(String processInstanceId);
 }

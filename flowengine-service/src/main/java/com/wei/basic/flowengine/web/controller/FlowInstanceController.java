@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.wei.client.base.CommonResult.successReturn;
@@ -58,6 +59,18 @@ public class FlowInstanceController {
         return successReturn(instance);
     }
 
+    @ApiOperation(value = "强制完成流程实例", httpMethod = "POST", notes = "强制完成流程实例")
+    @PostMapping("finish")
+    public CommonResult<ProcessInstanceDO> finish(@RequestParam("id") String id, @RequestParam("reason") String reason) {
+        try {
+            runtimeService.deleteProcessInstance(id, reason);
+            return CommonResult.successReturn(flowInstanceService.getProcessInstancesById(id));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return CommonResult.successReturn(null);
+    }
+
     @ApiOperation(value = "获取某流程实例未完成的节点列表", httpMethod = "GET", notes = "获取某流程实例未完成的节点列表")
     @RequestMapping("todotasks")
     public CommonResult<List<TaskInstanceDO>> completeTask(@RequestParam("id") String id) {
@@ -79,6 +92,7 @@ public class FlowInstanceController {
         }
         return CommonResult.errorReturn("未找到该流程！");
     }
+
     @ApiOperation(value = "获取流程实例列表根据实例ids", httpMethod = "GET", notes = "获取流程实例列表根据实例ids")
     @RequestMapping("getFlowInstancesByProcInstIds")
     public CommonResult<List<ProcessInstanceDO>> getFlowInstancesByProcInstIds(@RequestParam("ProcInstIds") List<String> ProcInstIds) {
