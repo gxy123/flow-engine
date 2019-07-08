@@ -34,8 +34,8 @@ public class ProcessCompletedHandler extends MessageSerializationSupport impleme
         // 此处首先拿到的executionId不是根的
         HistoricProcessInstanceEntity instance = (HistoricProcessInstanceEntity) ((ActivitiEntityEventImpl) event).getEntity();
         ProcessInstanceDO completed = new ProcessInstanceDO();
-        completed.setProcessDefinitionId(event.getProcessDefinitionId());
-        completed.setId(event.getProcessInstanceId());
+        completed.setProcessDefinitionId(instance.getProcessDefinitionId());
+        completed.setId(instance.getProcessInstanceId());
         completed.setBusinessKey(instance.getBusinessKey());
         completed.setEndTime(instance.getEndTime());
         completed.setVariables(instance.getProcessVariables());

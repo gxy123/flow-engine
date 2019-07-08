@@ -12,6 +12,7 @@ import org.activiti.engine.impl.persistence.entity.HistoricActivityInstanceEntit
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import static com.wei.basic.flowengine.client.define.FlowEngineMessageTagDefine.TAG_TASK_COMPLETED;
 import static org.activiti.engine.delegate.event.ActivitiEventType.HISTORIC_ACTIVITY_INSTANCE_ENDED;
@@ -43,6 +44,9 @@ public class TaskCompletedHandler extends MessageSerializationSupport implements
         t.setId(historicInstance.getTaskId());
         t.setStartTime(historicInstance.getStartTime());
         t.setEndTime(historicInstance.getEndTime());
+        if(StringUtils.isEmpty(historicInstance.getTaskId())||StringUtils.isEmpty(historicInstance.getEndTime())){
+            log.error("TaskId_is_null_or_EndTime_is_null,");
+        }
 
         String message = serialize(t);
         log.info("msg={}",message);
