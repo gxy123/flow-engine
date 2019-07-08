@@ -4,6 +4,7 @@ import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.Producer;
 import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
 import com.wei.basic.flowengine.configer.MqProperties;
+import com.wei.client.base.CommonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.delegate.event.ActivitiEntityEvent;
 import org.activiti.engine.delegate.event.ActivitiEvent;
@@ -38,7 +39,7 @@ public class TaskAssignedHandler extends MessageSerializationSupport implements 
         t.setStartTime(task.getCreateTime());
         t.setAssignee(Long.valueOf(task.getAssignee()));
 
-        String message = serialize(t);
+        String message = serialize(CommonResult.successReturn(t));
         Message m = new Message(mqProperties.getTopic(), TAG_TASK_ASSIGNED, message.getBytes());
         messageProducer.send(m);
 

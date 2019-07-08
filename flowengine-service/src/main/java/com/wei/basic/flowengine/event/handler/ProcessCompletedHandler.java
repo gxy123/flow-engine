@@ -4,6 +4,7 @@ import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.Producer;
 import com.wei.basic.flowengine.client.domain.ProcessInstanceDO;
 import com.wei.basic.flowengine.configer.MqProperties;
+import com.wei.client.base.CommonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.delegate.event.impl.ActivitiEntityEventImpl;
@@ -39,8 +40,7 @@ public class ProcessCompletedHandler extends MessageSerializationSupport impleme
         completed.setBusinessKey(instance.getBusinessKey());
         completed.setEndTime(instance.getEndTime());
         completed.setVariables(instance.getProcessVariables());
-
-        String message = serialize(completed);
+        String message = serialize(CommonResult.successReturn(completed));
         Message m = new Message(mqProperties.getTopic(), TAG_PROCESS_COMPLETED, message.getBytes());
         messageProducer.send(m);
 
