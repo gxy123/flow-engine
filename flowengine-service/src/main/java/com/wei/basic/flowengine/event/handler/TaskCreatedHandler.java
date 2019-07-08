@@ -54,15 +54,6 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
 
         t.setTaskDefinitionKey(task.getTaskDefinitionKey());
         t.setStatus(STATUS_DOING);
-       /* HistoricProcessInstanceQuery historicProcessQuery = historyService.createHistoricProcessInstanceQuery();
-
-
-        HistoricProcessInstanceQuery historicProcessInstanceQuery = historicProcessQuery.processInstanceId(task.getProcessInstanceId());
-        if(CollectionUtils.isEmpty(historicProcessInstanceQuery.list())){
-            log.error("historic_process_instance_query_empty event={}",event);
-            return;
-        }*/
-       // HistoricProcessInstance historicProcessInstance = historicProcessInstanceQuery.list().get(0);
         if(StringUtils.isEmpty(task.getProcessDefinitionId())){
             log.error("ProcessDefinitionId_query_empty event={}",event);
             return;
