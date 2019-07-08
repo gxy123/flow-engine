@@ -38,8 +38,8 @@ public class ProcessStartedHandler extends MessageSerializationSupport implement
         ExecutionEntity instance = ((ExecutionEntity) ((ActivitiProcessStartedEvent) event).getEntity()).getParent();
 
         ProcessInstanceDO started = new ProcessInstanceDO();
-        started.setProcessDefinitionId(event.getProcessDefinitionId());
-        started.setId(event.getProcessInstanceId());
+        started.setProcessDefinitionId(instance.getProcessDefinitionId());
+        started.setId(instance.getProcessInstanceId());
         started.setStartTime(instance.getStartTime());
         started.setBusinessKey(instance.getBusinessKey());
         started.setVariables(instance.getVariables());
