@@ -5,9 +5,11 @@ import com.aliyun.openservices.ons.api.Producer;
 import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
 import com.wei.basic.flowengine.configer.MqProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.activiti.engine.delegate.event.ActivitiEntityEvent;
 import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.delegate.event.impl.ActivitiEntityEventImpl;
 import org.activiti.engine.impl.persistence.entity.HistoricActivityInstanceEntity;
+import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -38,7 +40,7 @@ public class TaskCompletedHandler extends MessageSerializationSupport implements
         TaskInstanceDO t = new TaskInstanceDO();
         t.setFlowInstanceId(historicInstance.getProcessInstanceId());
         t.setName(historicInstance.getActivityName());
-        t.setId(historicInstance.getId());
+        t.setId(historicInstance.getTaskId());
         t.setStartTime(historicInstance.getStartTime());
         t.setEndTime(historicInstance.getEndTime());
 
