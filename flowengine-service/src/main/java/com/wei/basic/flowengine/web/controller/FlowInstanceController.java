@@ -72,7 +72,7 @@ public class FlowInstanceController {
     }
 
     @ApiOperation(value = "获取某流程实例未完成的节点列表", httpMethod = "GET", notes = "获取某流程实例未完成的节点列表")
-    @RequestMapping("todotasks")
+    @RequestMapping("toDoTasks")
     public CommonResult<List<TaskInstanceDO>> completeTask(@RequestParam("id") String id) {
         return successReturn(flowInstanceService.getTodoTasks(id));
     }

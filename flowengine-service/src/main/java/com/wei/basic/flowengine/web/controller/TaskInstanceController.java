@@ -56,10 +56,18 @@ public class TaskInstanceController {
                     .unfinished()
                     .singleResult();
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("task_complete_error_msg={}",e.getMessage());
+            return CommonResult.errorReturn("引擎操作异常！");
         }
-        if (null != todo) {
+        if (null == todo) {
+            log.error("task_complete_error_not_find_data");
+            return CommonResult.errorReturn("引擎中未找到该任务！");
+        }
+        try {
             taskService.complete(taskId, variables);
+        } catch (Exception e) {
+           log.error("task_complete_exception_msg={}",e.getMessage());
+           return CommonResult.errorReturn("引擎处理异常！");
         }
         String processInstanceId = historyService.createHistoricTaskInstanceQuery().taskId(taskId)
                 .singleResult().getProcessInstanceId();
@@ -73,7 +81,7 @@ public class TaskInstanceController {
         try {
             taskService.setAssignee(taskId, userId.toString());
         } catch (Exception e) {
-            log.error("Modification anomaly taskId:{},msg:{}", taskId,e.getMessage());
+            log.error("assignee_exception, taskId:{},msg:{}", taskId,e.getMessage());
             return CommonResult.errorReturn("改派异常");
         }
         return successReturn(true);
@@ -82,7 +90,6 @@ public class TaskInstanceController {
     @ApiOperation(value = "获取引擎里的任务列表（异常数据处理使用）", httpMethod = "GET", notes = "获取引擎里的任务列表（异常数据处理使用）")
     @RequestMapping(value = "getRunTasks", method = RequestMethod.GET)
     public CommonResult<List<TaskInstanceDO>> getRunTasks(@RequestParam String processDefinitionKey ,@RequestParam Boolean isrunning,@RequestParam Integer pageNum,@RequestParam Integer pageSize) {
-        List<TaskInstanceDO> list = new ArrayList<>();
         if (isrunning) {
             return flowInstanceService.getRunTask(processDefinitionKey,pageNum,pageSize);
         } else {
