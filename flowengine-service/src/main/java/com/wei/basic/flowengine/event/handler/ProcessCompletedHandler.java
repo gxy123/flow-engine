@@ -31,7 +31,6 @@ public class ProcessCompletedHandler extends MessageSerializationSupport impleme
 
     @Override
     public void handle(ActivitiEvent event) {
-        System.out.println("流程实例结束事件...");
         // 此处首先拿到的executionId不是根的
         HistoricProcessInstanceEntity instance = (HistoricProcessInstanceEntity) ((ActivitiEntityEventImpl) event).getEntity();
         ProcessInstanceDO completed = new ProcessInstanceDO();
@@ -41,6 +40,7 @@ public class ProcessCompletedHandler extends MessageSerializationSupport impleme
         completed.setEndTime(instance.getEndTime());
         completed.setVariables(instance.getProcessVariables());
         String message = serialize(CommonResult.successReturn(completed));
+        log.info("processInstance_completed_send_msg={}",message);
         Message m = new Message(mqProperties.getTopic(), TAG_PROCESS_COMPLETED, message.getBytes());
         messageProducer.send(m);
 
