@@ -18,6 +18,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -42,6 +43,8 @@ public class DefaultHttpRequestAspect {
 
     @Resource
     private EnvironmentDefine environmentDefine;
+    @Value("${spring.application.name}")
+    private String serverName;
 
     @Pointcut("@annotation(com.wei.common.annotaion.Validate)")
     public void pointcut() {
@@ -111,6 +114,7 @@ public class DefaultHttpRequestAspect {
                 value += cookie.getName() + "=" + cookie.getValue() + ";";
             }
             header.put("Cookie", value);
+            header.put("ServerName",serverName);
         }
         CommonResult<ValidateVO> post = HttpClientUtil.post(host, "/passport/validate", "", header, ValidateVO.class);
         return post.getResult();

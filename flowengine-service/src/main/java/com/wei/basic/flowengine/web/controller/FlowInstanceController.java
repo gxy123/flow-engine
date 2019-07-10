@@ -60,7 +60,7 @@ public class FlowInstanceController {
     }
 
     @ApiOperation(value = "强制完成流程实例", httpMethod = "POST", notes = "强制完成流程实例")
-    @PostMapping("finish")
+    @RequestMapping(value="finish",method = RequestMethod.POST)
     public CommonResult<ProcessInstanceDO> finish(@RequestParam("id") String id, @RequestParam("reason") String reason) {
         try {
             runtimeService.deleteProcessInstance(id, reason);
