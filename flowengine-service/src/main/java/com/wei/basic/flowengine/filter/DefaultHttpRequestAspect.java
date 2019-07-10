@@ -66,12 +66,20 @@ public class DefaultHttpRequestAspect {
             //员工接口校验规则
             validated = Objects.nonNull(validate) && validate.getUserType().equals(UserTypeDef.EMPLOYER);
         }
+        if (annotation != null && annotation.action().equals(ValidateType.CLUSTER)) {
+            //开放平台接口校验规则
+            validated = Objects.nonNull(validate) && validate.getUserType().equals(UserTypeDef.CLUSTER);
+        }
+        if (annotation != null && annotation.action().equals(ValidateType.PROVIDER)) {
+            //服务商接口校验规则
+            validated = Objects.nonNull(validate) && validate.getUserType().equals(UserTypeDef.PROVIDER);
+        }
         if (annotation != null && annotation.action().equals(ValidateType.SIGN)) {
             //签名校验
         }
         if (validated) {
             if (validate != null) {
-                SessionUtil.setRequestContext(new ValidateVO());
+                SessionUtil.setRequestContext(validate);
             }
         }
         if (annotation != null && !validated && !annotation.action().equals(ValidateType.MISS)) {
