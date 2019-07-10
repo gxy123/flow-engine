@@ -44,7 +44,6 @@ public class ProcessCompletedHandler extends MessageSerializationSupport impleme
         Message m = new Message(mqProperties.getTopic(), TAG_PROCESS_COMPLETED, message.getBytes());
         messageProducer.send(m);
 
-        log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), TAG_PROCESS_COMPLETED);
     }
 
     @Override
