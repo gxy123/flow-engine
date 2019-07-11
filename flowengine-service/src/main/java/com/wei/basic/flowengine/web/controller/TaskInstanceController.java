@@ -3,6 +3,7 @@ package com.wei.basic.flowengine.web.controller;
 import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
 import com.wei.basic.flowengine.service.FlowInstanceService;
 import com.wei.client.base.CommonResult;
+import com.wei.common.util.DateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import static com.wei.client.base.CommonResult.successReturn;
+import static com.wei.common.util.DateUtil.DAY_FORMAT;
+import static com.wei.common.util.DateUtil.DEFAULT_DATE_FORMAT;
 
 /**
  * Created by suyaqiang on 2019/1/7.
@@ -89,11 +93,12 @@ public class TaskInstanceController {
 
     @ApiOperation(value = "获取引擎里的任务列表（异常数据处理使用）", httpMethod = "GET", notes = "获取引擎里的任务列表（异常数据处理使用）")
     @RequestMapping(value = "getRunTasks", method = RequestMethod.GET)
-    public CommonResult<List<TaskInstanceDO>> getRunTasks(@RequestParam String processDefinitionKey ,@RequestParam Boolean isrunning,@RequestParam Integer pageNum,@RequestParam Integer pageSize) {
+    public CommonResult<List<TaskInstanceDO>> getRunTasks(@RequestParam String processDefinitionKey , @RequestParam String date, @RequestParam Boolean isrunning, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+        Date date1 = DateUtil.str2Date(date,DAY_FORMAT);
         if (isrunning) {
-            return flowInstanceService.getRunTask(processDefinitionKey,pageNum,pageSize);
+            return flowInstanceService.getRunTask(processDefinitionKey,date1,pageNum,pageSize);
         } else {
-            return flowInstanceService.HistoricTasks(processDefinitionKey,pageNum,pageSize);
+            return flowInstanceService.HistoricTasks(processDefinitionKey,date1,pageNum,pageSize);
         }
     }
 

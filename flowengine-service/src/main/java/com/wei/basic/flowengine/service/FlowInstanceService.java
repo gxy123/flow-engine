@@ -5,6 +5,7 @@ import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
 import com.wei.client.base.CommonResult;
 import org.activiti.engine.history.HistoricProcessInstance;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,9 +15,9 @@ public interface FlowInstanceService {
 
     List<TaskInstanceDO> getTodoTasks(String instanceId);
 
-    CommonResult<List<TaskInstanceDO>> getRunTask(String processDefinitionKey, int pageNum, int pageSize);
+    CommonResult<List<TaskInstanceDO>> getRunTask(String processDefinitionKey, Date date, int pageNum, int pageSize);
 
-    CommonResult<List<TaskInstanceDO>> HistoricTasks(String processDefinitionKey,int pageNum,int pageSize);
+    CommonResult<List<TaskInstanceDO>> HistoricTasks(String processDefinitionKey, Date date,int pageNum,int pageSize);
 
     CommonResult<List<ProcessInstanceDO>>getProcessInstances(List<String> processInstanceIds);
 

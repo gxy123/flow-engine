@@ -13,7 +13,7 @@ public abstract class MessageSerializationSupport {
 
     protected String serialize(Object serializable) {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"));
+        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String message = "";
         try {

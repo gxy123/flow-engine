@@ -43,9 +43,9 @@ public class ProcessStartedHandler extends MessageSerializationSupport implement
         started.setId(instance.getProcessInstanceId());
         started.setStartTime(instance.getStartTime());
         started.setBusinessKey(instance.getBusinessKey());
-        started.setVariables(instance.getVariables());
+        //started.setVariables(instance.getVariables());
         ObjectMapper mapper = new ObjectMapper();
-        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"));
+        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String message = serialize(CommonResult.successReturn(started));
         Message m = new Message(mqProperties.getTopic(), TAG_PROCESS_STARTED, message.getBytes());

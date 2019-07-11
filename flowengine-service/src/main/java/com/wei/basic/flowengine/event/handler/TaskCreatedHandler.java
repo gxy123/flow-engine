@@ -65,9 +65,8 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
         }
         t.setProcessDefinitionKey(defin[0]);
         t.setStartTime(new Date());
-        t.setVariables(task.getVariables());
         ObjectMapper mapper = new ObjectMapper();
-        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"));
+        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String message = serialize(t);
         Message m = new Message(mqProperties.getTopic(), TAG_TASK_CREATED, message.getBytes());
