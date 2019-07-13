@@ -19,8 +19,8 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
     url: jdbc:mysql://rds07rzqa6g5f95hoooi601.mysql.rds.aliyuncs.com:3388/db_flow_engine?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
-    username: root
-    password: 8pb0y%o69fc*iUHD
+    username: user_flow_engine
+    password: xiBuCIPhXc1
     dbcp2:
       max-idle: 10
       max-wait-millis: 10000
