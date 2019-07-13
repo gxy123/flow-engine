@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 
 package com.wei.basic.flowengine.configer;
@@ -21,11 +21,12 @@ import javax.annotation.Resource;
  */
 @Component
 public class TwitterIdGenerator implements IdGenerator {
-	@Resource
-	private IDWrapper idWrapper;
-	@Override
-	public String getNextId() {
-		return String.valueOf(idWrapper.getSmallId());
-	}
+    @Resource
+    private IDWrapper idWrapper;
+
+    @Override
+    public String getNextId() {
+        return String.valueOf(idWrapper.getSmallId());
+    }
 
 }
