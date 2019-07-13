@@ -71,7 +71,7 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
         String message = serialize(t);
         Message m = new Message(mqProperties.getTopic(), TAG_TASK_CREATED, message.getBytes());
         messageProducer.send(m);
-        log.info("flow_engine_task_create,msg={}",m);
+        log.info("flow_engine_task_create,msg={}",message);
 
     }
 
