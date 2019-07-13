@@ -42,7 +42,7 @@ public class TaskAssignedHandler extends MessageSerializationSupport implements 
         String message = serialize(CommonResult.successReturn(t));
         Message m = new Message(mqProperties.getTopic(), TAG_TASK_ASSIGNED, message.getBytes());
         messageProducer.send(m);
-
+        log.info("flow_engine_task_assigne,msg={}",m);
         log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), TAG_TASK_ASSIGNED);
     }
 

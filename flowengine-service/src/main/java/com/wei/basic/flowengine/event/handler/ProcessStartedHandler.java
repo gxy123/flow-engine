@@ -50,7 +50,7 @@ public class ProcessStartedHandler extends MessageSerializationSupport implement
         String message = serialize(CommonResult.successReturn(started));
         Message m = new Message(mqProperties.getTopic(), TAG_PROCESS_STARTED, message.getBytes());
         messageProducer.send(m);
-
+        log.info("flow_engine_process_start,msg={}",m);
         log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), TAG_PROCESS_STARTED);
     }
 

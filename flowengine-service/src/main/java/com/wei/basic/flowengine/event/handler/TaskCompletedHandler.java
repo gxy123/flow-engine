@@ -45,11 +45,11 @@ public class TaskCompletedHandler extends MessageSerializationSupport implements
         t.setStartTime(historicInstance.getStartTime());
         t.setEndTime(historicInstance.getEndTime());
         if(StringUtils.isEmpty(historicInstance.getTaskId())||StringUtils.isEmpty(historicInstance.getEndTime())){
-            log.error("TaskId_is_null_or_EndTime_is_null,");
+            log.error("TaskId_is_null_or_EndTime_is_null,id={}",historicInstance.getProcessInstanceId());
         }
 
         String message = serialize(t);
-        log.info("msg={}",message);
+        log.info("flow_engine_task_complete,msg={}",message);
         Message m = new Message(mqProperties.getTopic(), TAG_TASK_COMPLETED, message.getBytes());
         messageProducer.send(m);
 
