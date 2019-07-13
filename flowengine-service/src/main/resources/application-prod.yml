@@ -35,7 +35,7 @@ spring:
   redis:
     host: bookeeping.redis.rds.aliyuncs.com
     port: 6379
-    password: GLpIEnf
+    password: GLpIEnf#*WIfpM#P
     #       password: dh35hebsd87ed9df9d0kemd9
     lettuce:
       pool:
