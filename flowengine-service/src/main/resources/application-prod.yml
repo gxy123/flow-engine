@@ -18,7 +18,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.7.219/db_flow_engine?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+    url: jdbc:mysql://rds07rzqa6g5f95hoooi601.mysql.rds.aliyuncs.com:3388/db_flow_engine?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
     username: root
     password: 8pb0y%o69fc*iUHD
     dbcp2:
@@ -33,8 +33,9 @@ spring:
   transaction:
     rollback-on-commit-failure: true
   redis:
-    host: 192.168.5.231
+    host: bookeeping.redis.rds.aliyuncs.com
     port: 6379
+    password: GLpIEnf
     #       password: dh35hebsd87ed9df9d0kemd9
     lettuce:
       pool:
@@ -55,5 +56,5 @@ rocketmq:
     access-key: i3xR4RSOyYNBPZSb
     secret-key: kU1Wd69jUH56ACMk0uqJi2lxA34R3g
     ons-address: http://onsaddr-internet.aliyun.com/rocketmq/nsaddr4client-internet
-    group-id: GID-notify-server
-    topic: message-bus-topic
+    group-id: GID_flow_engine_server
+    topic: flow-engine-state-topic
