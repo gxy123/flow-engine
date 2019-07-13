@@ -38,7 +38,6 @@ public class MqConfiguration {
         confProps = new Properties();
         confProps.setProperty(AccessKey, mqProperties.getAccessKey());
         confProps.setProperty(SecretKey, mqProperties.getSecretKey());
-        confProps.setProperty(ONSAddr, mqProperties.getOnsAddress());
         log.info("rocket mq initialized ...");
     }
 }

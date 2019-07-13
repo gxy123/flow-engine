@@ -17,7 +17,6 @@ public class MqProperties {
     private String groupId;
     private String accessKey;
     private String secretKey;
-    private String onsAddress;
     private Integer consumeThreadNumbers;
     private String topic; // 广播消息总线topic
 

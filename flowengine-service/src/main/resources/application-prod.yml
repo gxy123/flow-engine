@@ -55,6 +55,5 @@ rocketmq:
   producer:
     access-key: i3xR4RSOyYNBPZSb
     secret-key: kU1Wd69jUH56ACMk0uqJi2lxA34R3g
-    ons-address: http://onsaddr-internet.aliyun.com/rocketmq/nsaddr4client-internet
     group-id: GID_flow_engine_server
     topic: flow-engine-state-topic
