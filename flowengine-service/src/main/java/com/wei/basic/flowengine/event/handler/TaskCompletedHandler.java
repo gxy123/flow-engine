@@ -49,10 +49,10 @@ public class TaskCompletedHandler extends MessageSerializationSupport implements
         }
 
         String message = serialize(t);
-        log.info("flow_engine_task_complete,msg={}",message);
+
         Message m = new Message(mqProperties.getTopic(), TAG_TASK_COMPLETED, message.getBytes());
         messageProducer.send(m);
-
+        log.info("flow_engine_task_complete,msgId={},msg={}",m.getMsgID(),message);
         log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), TAG_TASK_COMPLETED);
     }
 

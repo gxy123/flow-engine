@@ -39,10 +39,10 @@ public class ProcessCompletedHandler extends MessageSerializationSupport impleme
         completed.setBusinessKey(instance.getBusinessKey());
         completed.setEndTime(instance.getEndTime());
         String message = serialize(CommonResult.successReturn(completed));
-        log.info("processInstance_completed_send_msg={}",message);
+
         Message m = new Message(mqProperties.getTopic(), TAG_PROCESS_COMPLETED, message.getBytes());
         messageProducer.send(m);
-
+        log.info("processInstance_completed,msgId={},send_msg={}",m.getMsgID(),message);
     }
 
     @Override
