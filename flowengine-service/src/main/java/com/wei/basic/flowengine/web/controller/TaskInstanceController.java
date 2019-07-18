@@ -70,7 +70,7 @@ public class TaskInstanceController {
         try {
             taskService.complete(taskId, variables);
         } catch (Exception e) {
-           log.error("task_complete_exception_msg={}",e.getMessage());
+           log.error("task_complete_exception,taskId={},msg={}",taskId,e.getMessage());
            return CommonResult.errorReturn("引擎处理异常！");
         }
         String processInstanceId = historyService.createHistoricTaskInstanceQuery().taskId(taskId)
