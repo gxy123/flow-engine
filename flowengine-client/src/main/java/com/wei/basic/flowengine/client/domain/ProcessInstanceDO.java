@@ -24,4 +24,6 @@ public class ProcessInstanceDO extends  MapData {
 
     private Date endTime;
 
+    private String deleteReason;
+
 }
