@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.util.Objects;
+
 import static com.wei.basic.flowengine.client.define.FlowEngineMessageTagDefine.TAG_TASK_COMPLETED;
 import static org.activiti.engine.delegate.event.ActivitiEventType.HISTORIC_ACTIVITY_INSTANCE_ENDED;
 
@@ -44,6 +46,12 @@ public class TaskCompletedHandler extends MessageSerializationSupport implements
         t.setId(historicInstance.getTaskId());
         t.setStartTime(historicInstance.getStartTime());
         t.setEndTime(historicInstance.getEndTime());
+        if(Objects.equals(historicInstance.getDeleteReason(),"halt")){
+            log.info("process_halt,flowInstanceId={}",t.getId());
+            t.setStatus(TaskInstanceDO.STATUS_HALT);
+        }else{
+            t.setStatus(TaskInstanceDO.STATUS_FINISHED);
+        }
         if(StringUtils.isEmpty(historicInstance.getTaskId())||StringUtils.isEmpty(historicInstance.getEndTime())){
             log.error("TaskId_is_null_or_EndTime_is_null,id={}",historicInstance.getProcessInstanceId());
         }
