@@ -67,6 +67,9 @@ public class TaskInstanceController {
             log.error("task_complete_error_not_find_data,taskId={}",taskId);
             return CommonResult.errorReturn("引擎中未找到该任务！");
         }
+        if(todo.getTaskDefinitionKey().equals("OrganizeLandTaxMaterials")){
+            variables.put("isLandTaxRemindTheIncubatorToReport",0);
+        }
         try {
             taskService.complete(taskId, variables);
         } catch (Exception e) {
