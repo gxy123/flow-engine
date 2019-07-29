@@ -101,6 +101,12 @@ public class TaskInstanceController {
         }
         return successReturn(instanceDO);
     }
+    @ApiOperation(value = "设置参数", httpMethod = "GET", notes = "设置参数")
+    @RequestMapping("taskSetVariables")
+    public CommonResult<Boolean> taskSetVariables(@RequestParam("taskId") String taskId, @RequestBody(required = false) Map<String, Object> variables) {
+        taskService.setVariables(taskId, variables);
+        return CommonResult.successReturn(true);
+    }
 
     @ApiOperation(value = "节点改派", httpMethod = "POST", notes = "节点改派")
     @RequestMapping(value = "setAssignee", method = RequestMethod.POST)
