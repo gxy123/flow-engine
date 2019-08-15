@@ -136,10 +136,11 @@ public class TaskInstanceController {
     }
     @ApiOperation(value = "根据taskId获取任务数据", httpMethod = "GET", notes = "根据taskId获取任务数据")
     @RequestMapping(value = "getTaskByTaskId", method = RequestMethod.GET)
-    public CommonResult<List<TaskInstanceDO>> getRunTasks(@RequestParam String taskId) {
+    public CommonResult<TaskInstanceDO> getRunTasks(@RequestParam String taskId) {
         CommonResult commonResult =new CommonResult();
         TaskInstanceDO taskByTaskId = flowInstanceService.getTaskByTaskId(taskId);
         commonResult.setResult(taskByTaskId);
+        commonResult.setSuccess(true);
         return commonResult;
 
     }
