@@ -22,4 +22,6 @@ public interface FlowInstanceService {
     CommonResult<List<ProcessInstanceDO>>getProcessInstances(List<String> processInstanceIds);
 
     ProcessInstanceDO getProcessInstancesById(String processInstanceId);
+
+    TaskInstanceDO getTaskByTaskId(String taskId);
 }

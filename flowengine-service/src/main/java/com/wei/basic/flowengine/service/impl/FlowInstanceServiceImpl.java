@@ -170,6 +170,35 @@ public class FlowInstanceServiceImpl implements FlowInstanceService {
         }
         return null;
     }
+
+
+    @Override
+    public TaskInstanceDO getTaskByTaskId(String taskId) {
+        // 保证幂等
+        HistoricTaskInstance t = historyService.createHistoricTaskInstanceQuery().taskId(taskId).singleResult();
+        TaskInstanceDO instanceDO=new TaskInstanceDO();
+            if(t!=null) {
+
+                instanceDO.setId(t.getId());
+                instanceDO.setFlowInstanceId(t.getProcessInstanceId());
+                instanceDO.setName(t.getName());
+                instanceDO.setStartTime(t.getCreateTime());
+                instanceDO.setTaskDefinitionKey(t.getTaskDefinitionKey());
+                instanceDO.setVariables(t.getTaskLocalVariables());
+                instanceDO.setProcessDefinitionId(t.getProcessDefinitionId());
+                if (!StringUtils.isEmpty(t.getAssignee())) {
+                    instanceDO.setAssignee(Long.valueOf(t.getAssignee()));
+                }
+
+                instanceDO.setStatus(STATUS_DOING);
+                if (!StringUtils.isEmpty(t.getProcessDefinitionId())) {
+                    instanceDO.setProcessDefinitionKey(t.getProcessDefinitionId().split(":")[0]);
+                }
+                return instanceDO;
+            }
+        return null;
+    }
+
     private ProcessInstanceDO getDO(HistoricProcessInstance vo){
         ProcessInstanceDO instanceDO = new ProcessInstanceDO();
         instanceDO.setId(vo.getId());
