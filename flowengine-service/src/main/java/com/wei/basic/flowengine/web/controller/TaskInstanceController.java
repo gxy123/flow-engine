@@ -53,7 +53,7 @@ public class TaskInstanceController {
             @RequestBody(required = false) Map<String, Object> variables) {
 
         // 保证幂等
-        HistoricTaskInstance todo = null;
+        HistoricTaskInstance todo;
         try {
             todo = historyService.createHistoricTaskInstanceQuery()
                     .taskId(taskId)
