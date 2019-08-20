@@ -7,10 +7,12 @@ import org.springframework.context.annotation.Configuration;
  * Created by suyaqiang on 2018/12/19.
  */
 @Configuration
-@ComponentScan({
+@ComponentScan(basePackages = {
+        "com.wei.common.util",
         "com.wei.basic.flowengine",
-        "com.wei.service"
+        "com.wei.service",
 })
+
 public class FlowEngineAppConfig {
 
 }

@@ -2,7 +2,7 @@ server:
   tomcat:
     max-threads: 3000
     min-spare-threads: 10
-  port: 3040
+  port: 3020
 eureka:
   client:
     service-url:
@@ -14,11 +14,11 @@ eureka:
     prefer-ip-address: true
 spring:
   application:
-    name: xiaowei-api
+    name: flowengine-api
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.7.219/db_flow_engine?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+    url: jdbc:mysql://192.168.7.220/db_flow_engine?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
     username: root
     password: 8pb0y%o69fc*iUHD
     dbcp2:
@@ -50,16 +50,10 @@ spring:
 mybatis:
   mapperLocations: classpath:mapper/**/*.xml
 
-# rocketmq
 rocketmq:
-  consumer:
-    consumer-id: CID_jebe_orderservice_01
+  producer:
     access-key: i3xR4RSOyYNBPZSb
     secret-key: kU1Wd69jUH56ACMk0uqJi2lxA34R3g
     ons-address: http://onsaddr-internet.aliyun.com/rocketmq/nsaddr4client-internet
-    consume-thread-numbers: 1
-    topic: order_split
-    emp-assgin-tag: addLead
-
-
-
+    group-id: GID_flow_engine_test
+    topic: flow-engine-state-topic-test

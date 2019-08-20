@@ -11,9 +11,13 @@ import org.springframework.stereotype.Component;
  */
 @Data
 @Component
-@ConfigurationProperties(
-        prefix = "service.config"
-)
-public class ServerProperties {
+@ConfigurationProperties("rocketmq.producer")
+public class MqProperties {
+
+    private String groupId;
+    private String accessKey;
+    private String secretKey;
+    private Integer consumeThreadNumbers;
+    private String topic; // 广播消息总线topic
 
 }
