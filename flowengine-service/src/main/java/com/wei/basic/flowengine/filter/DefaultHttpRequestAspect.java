@@ -5,6 +5,7 @@ import com.wei.client.base.CommonCode;
 import com.wei.client.base.CommonResult;
 import com.wei.common.annotaion.Validate;
 import com.wei.common.annotaion.ValidateType;
+import com.wei.common.annotaion.ValidateWeight;
 import com.wei.common.util.HttpClientUtil;
 import com.wei.passport.client.define.PassportHostDef;
 import com.wei.passport.client.define.UserTypeDef;
@@ -43,6 +44,7 @@ public class DefaultHttpRequestAspect {
 
     @Resource
     private EnvironmentDefine environmentDefine;
+
     @Value("${spring.application.name}")
     private String serverName;
 
@@ -58,23 +60,27 @@ public class DefaultHttpRequestAspect {
         MethodSignature signature = (MethodSignature) point.getSignature();
         //获取被拦截的方法
         Method method = signature.getMethod();
-        ValidateVO validate = remoteValidate(request);
+        ValidateVO validate = null;
         Validate annotation = method.getAnnotation(Validate.class);
         boolean validated = true;
         if (annotation != null && annotation.action().equals(ValidateType.DEFAULT)) {
             //默认校验规则
+            validate = remoteValidate(request, "website");
             validated = Objects.nonNull(validate) && validate.getUserType().equals(UserTypeDef.DEFAULT);
         }
         if (annotation != null && annotation.action().equals(ValidateType.EMPLOYER)) {
             //员工接口校验规则
+            validate = remoteValidate(request, "jebe");
             validated = Objects.nonNull(validate) && validate.getUserType().equals(UserTypeDef.EMPLOYER);
         }
         if (annotation != null && annotation.action().equals(ValidateType.CLUSTER)) {
             //开放平台接口校验规则
+            validate = remoteValidate(request, "saas");
             validated = Objects.nonNull(validate) && validate.getUserType().equals(UserTypeDef.CLUSTER);
         }
         if (annotation != null && annotation.action().equals(ValidateType.PROVIDER)) {
             //服务商接口校验规则
+            validate = remoteValidate(request, "provider");
             validated = Objects.nonNull(validate) && validate.getUserType().equals(UserTypeDef.PROVIDER);
         }
         if (annotation != null && annotation.action().equals(ValidateType.SIGN)) {
@@ -85,7 +91,7 @@ public class DefaultHttpRequestAspect {
                 SessionUtil.setRequestContext(validate);
             }
         }
-        if (annotation != null && !validated && !annotation.action().equals(ValidateType.MISS)) {
+        if (annotation != null && !validated && !annotation.weight().equals(ValidateWeight.MISS)) {
             CommonResult<Object> result = CommonResult.errorReturn(CommonCode.LOGIN_ERROR);
             result.setTraceId(MDC.get("traceId"));
             return result;
@@ -98,7 +104,7 @@ public class DefaultHttpRequestAspect {
         return proceed;
     }
 
-    private ValidateVO remoteValidate(HttpServletRequest request) {
+    private ValidateVO remoteValidate(HttpServletRequest request, String action) {
         List<String> host;
         if (environmentDefine.isProd()) {
             host = PassportHostDef.prodHost;
@@ -114,9 +120,9 @@ public class DefaultHttpRequestAspect {
                 value += cookie.getName() + "=" + cookie.getValue() + ";";
             }
             header.put("Cookie", value);
-            header.put("ServerName",serverName);
+            header.put("ServerName", serverName);
         }
-        CommonResult<ValidateVO> post = HttpClientUtil.post(host, "/passport/validate", "", header, ValidateVO.class);
+        CommonResult<ValidateVO> post = HttpClientUtil.post(host, String.format("/passport/auth?action=%s", action), "", header, ValidateVO.class);
         return post.getResult();
     }
 }
