@@ -25,6 +25,10 @@
             <artifactId>frame-common</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.wei.passport</groupId>
+            <artifactId>passport-client</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.activiti</groupId>
             <artifactId>activiti5-compatibility</artifactId>
             <version>6.0.0</version>

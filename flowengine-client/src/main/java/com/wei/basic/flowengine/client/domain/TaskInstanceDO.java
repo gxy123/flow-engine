@@ -23,7 +23,7 @@ public class TaskInstanceDO extends  MapData {
 
     private String id;
 
-    private String name;
+    private String name; 
 
     private String flowInstanceId;
 
@@ -40,5 +40,6 @@ public class TaskInstanceDO extends  MapData {
     private Date startTime;
 
     private Date endTime;
+
 
 }
