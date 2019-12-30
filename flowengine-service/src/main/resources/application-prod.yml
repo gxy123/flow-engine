@@ -51,9 +51,8 @@ spring:
 mybatis:
   mapperLocations: classpath:mapper/**/*.xml
 
-rocketmq:
-  producer:
-    access-key: i3xR4RSOyYNBPZSb
-    secret-key: kU1Wd69jUH56ACMk0uqJi2lxA34R3g
+
+service:
+  config:
+    producer-topic: flow-engine-state-topic
     group-id: GID_flow_engine_server
-    topic: flow-engine-state-topic

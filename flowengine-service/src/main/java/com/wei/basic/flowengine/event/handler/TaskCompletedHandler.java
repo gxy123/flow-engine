@@ -1,15 +1,13 @@
 package com.wei.basic.flowengine.event.handler;
 
-import com.aliyun.openservices.ons.api.Message;
-import com.aliyun.openservices.ons.api.Producer;
+import com.aliyun.openservices.ons.api.SendResult;
 import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
-import com.wei.basic.flowengine.configer.MqProperties;
+import com.wei.basic.flowengine.configer.ServerProperties;
+import com.wei.basic.flowengine.service.impl.EngineMessageSender;
 import lombok.extern.slf4j.Slf4j;
-import org.activiti.engine.delegate.event.ActivitiEntityEvent;
 import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.delegate.event.impl.ActivitiEntityEventImpl;
 import org.activiti.engine.impl.persistence.entity.HistoricActivityInstanceEntity;
-import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -28,9 +26,9 @@ import static org.activiti.engine.delegate.event.ActivitiEventType.HISTORIC_ACTI
 public class TaskCompletedHandler extends MessageSerializationSupport implements EventHandler {
 
     @Autowired
-    private Producer messageProducer;
+    private EngineMessageSender messageProducer;
     @Autowired
-    private MqProperties mqProperties;
+    private ServerProperties mqProperties;
 
     @Override
     public void handle(ActivitiEvent event) {
@@ -57,11 +55,9 @@ public class TaskCompletedHandler extends MessageSerializationSupport implements
         }
 
         String message = serialize(t);
-
-        Message m = new Message(mqProperties.getTopic(), TAG_TASK_COMPLETED, message.getBytes());
-        messageProducer.send(m);
-        log.info("flow_engine_task_complete,msgId={},msg={}",m.getMsgID(),message);
-        log.info("send message : topic :{}, tag : {} finished", mqProperties.getTopic(), TAG_TASK_COMPLETED);
+        SendResult sendResult = messageProducer.buildMessageAndSend(TAG_TASK_COMPLETED, message);
+        log.info("flow_engine_task_complete,msgId={},msg={}",sendResult.getMessageId(),message);
+        log.info("send message : topic :{}, tag : {} finished", mqProperties.getProducerTopic(), TAG_TASK_COMPLETED);
     }
 
     @Override

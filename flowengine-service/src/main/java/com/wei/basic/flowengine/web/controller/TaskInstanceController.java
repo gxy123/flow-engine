@@ -12,19 +12,16 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import static com.wei.basic.flowengine.client.domain.TaskInstanceDO.STATUS_FINISHED;
-import static com.wei.basic.flowengine.client.domain.TaskInstanceDO.STATUS_HALT;
 import static com.wei.client.base.CommonResult.successReturn;
 import static com.wei.common.util.DateUtil.DAY_FORMAT;
-import static com.wei.common.util.DateUtil.DEFAULT_DATE_FORMAT;
 
 /**
  * Created by suyaqiang on 2019/1/7.

@@ -1,28 +1,17 @@
 package com.wei.basic.flowengine.event.handler;
 
-import com.aliyun.openservices.ons.api.Message;
-import com.aliyun.openservices.ons.api.Producer;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.aliyun.openservices.ons.api.SendResult;
 import com.wei.basic.flowengine.client.domain.TaskInstanceDO;
-import com.wei.basic.flowengine.configer.MqProperties;
+import com.wei.basic.flowengine.service.impl.EngineMessageSender;
 import lombok.extern.slf4j.Slf4j;
-import org.activiti.engine.HistoryService;
 import org.activiti.engine.delegate.event.ActivitiEntityEvent;
 import org.activiti.engine.delegate.event.ActivitiEvent;
-import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
 
 import static com.wei.basic.flowengine.client.define.FlowEngineMessageTagDefine.TAG_TASK_CREATED;
 import static com.wei.basic.flowengine.client.domain.TaskInstanceDO.STATUS_DOING;
@@ -37,11 +26,7 @@ import static org.activiti.engine.delegate.event.ActivitiEventType.TASK_CREATED;
 public class TaskCreatedHandler extends MessageSerializationSupport implements EventHandler {
 
     @Autowired
-    private Producer messageProducer;
-    @Autowired
-    private MqProperties mqProperties;
-    @Autowired
-    private HistoryService historyService;
+    private EngineMessageSender messageProducer;
 
     @Override
     public void handle(ActivitiEvent event) {
@@ -65,13 +50,9 @@ public class TaskCreatedHandler extends MessageSerializationSupport implements E
         }
         t.setProcessDefinitionKey(defin[0]);
         t.setStartTime(new Date());
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String message = serialize(t);
-        Message m = new Message(mqProperties.getTopic(), TAG_TASK_CREATED, message.getBytes());
-        messageProducer.send(m);
-        log.info("flow_engine_task_create,msgId={},msg={}",m.getMsgID(),message);
+        SendResult sendResult = messageProducer.buildMessageAndSend(TAG_TASK_CREATED, message);
+        log.info("flow_engine_task_create,msgId={},msg={}",sendResult.getMessageId(),message);
 
     }
 

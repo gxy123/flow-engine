@@ -25,6 +25,11 @@
         <dependencies>
             <dependency>
                 <groupId>com.wei</groupId>
+                <artifactId>frame-mq</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.wei</groupId>
                 <artifactId>frame-client</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>

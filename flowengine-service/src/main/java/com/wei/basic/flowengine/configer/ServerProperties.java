@@ -15,5 +15,6 @@ import org.springframework.stereotype.Component;
         prefix = "service.config"
 )
 public class ServerProperties {
-
+    private String producerTopic;
+    private String groupId;
 }

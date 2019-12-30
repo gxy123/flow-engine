@@ -1,11 +1,9 @@
 package com.wei.basic.flowengine.event.handler;
 
-import com.aliyun.openservices.ons.api.Message;
-import com.aliyun.openservices.ons.api.Producer;
+import com.aliyun.openservices.ons.api.SendResult;
 import com.wei.basic.flowengine.client.domain.ProcessInstanceDO;
-import com.wei.basic.flowengine.configer.MqProperties;
+import com.wei.basic.flowengine.service.impl.EngineMessageSender;
 import com.wei.client.base.CommonResult;
-import com.wei.common.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.delegate.event.impl.ActivitiEntityEventImpl;
@@ -25,10 +23,7 @@ import static org.activiti.engine.delegate.event.ActivitiEventType.HISTORIC_PROC
 public class ProcessCompletedHandler extends MessageSerializationSupport implements EventHandler {
 
     @Autowired
-    private Producer messageProducer;
-
-    @Autowired
-    private MqProperties mqProperties;
+    private EngineMessageSender messageProducer;
 
     @Override
     public void handle(ActivitiEvent event) {
@@ -42,9 +37,10 @@ public class ProcessCompletedHandler extends MessageSerializationSupport impleme
         completed.setDeleteReason(instance.getDeleteReason());
         String message = serialize(CommonResult.successReturn(completed));
 
-        Message m = new Message(mqProperties.getTopic(), TAG_PROCESS_COMPLETED, message.getBytes());
-        messageProducer.send(m);
-        log.info("processInstance_completed,msgId={},send_msg={}",m.getMsgID(),message);
+       // Message m = new Message(mqProperties.getProducerTopic(), TAG_PROCESS_COMPLETED, message.getBytes());
+        SendResult sendResult = messageProducer.buildMessageAndSend(TAG_PROCESS_COMPLETED, message);
+
+        log.info("processInstance_completed,msgId={},send_msg={}",sendResult.getMessageId(),message);
     }
 
     @Override

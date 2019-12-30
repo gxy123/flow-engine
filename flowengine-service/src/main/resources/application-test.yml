@@ -50,10 +50,7 @@ spring:
 mybatis:
   mapperLocations: classpath:mapper/**/*.xml
 
-rocketmq:
-  producer:
-    access-key: i3xR4RSOyYNBPZSb
-    secret-key: kU1Wd69jUH56ACMk0uqJi2lxA34R3g
-    ons-address: http://onsaddr-internet.aliyun.com/rocketmq/nsaddr4client-internet
+service:
+  config:
+    producer-topic: flow-engine-state-topic-test
     group-id: GID_flow_engine_test
-    topic: flow-engine-state-topic-test
